@@ -1,0 +1,12 @@
+README.md
+setup.py
+datai/__init__.py
+datai/auto_plot.py
+datai/data_cleaning.py
+datai/utils.py
+datai/visualization.py
+datai.egg-info/PKG-INFO
+datai.egg-info/SOURCES.txt
+datai.egg-info/dependency_links.txt
+datai.egg-info/requires.txt
+datai.egg-info/top_level.txt

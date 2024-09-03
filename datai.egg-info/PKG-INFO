@@ -1,0 +1,14 @@
+Metadata-Version: 2.1
+Name: datai
+Version: 1.0
+Summary: A library for data visualization and cleaning
+Author: M Ans
+Author-email: m.ans.cs@outlook.com
+Classifier: Programming Language :: Python :: 3
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.7
+Requires-Dist: pandas==2.0.3
+Requires-Dist: numpy==1.25.1
+Requires-Dist: matplotlib==3.8.0
+Requires-Dist: seaborn==0.12.2
+Requires-Dist: scikit-learn==1.3.0
