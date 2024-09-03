@@ -71,6 +71,7 @@ Contributions are welcome! Please feel free to submit a pull request or open an 
 ## Contact
 
 For any questions or feedback, please reach out at [m.ans.cs@outlook.com](mailto:m.ans.cs@outlook.com).
+```
 
 ---
 
