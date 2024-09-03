@@ -25,10 +25,10 @@ pip install datai
 To use the library, start by importing the relevant modules:
 
 ```python
-from dataw.visualization import Examples
-from dataw.data_cleaning import DataCleaning
-from dataw.auto_plot import AutoPlot
-from dataw.datasets import Datasets
+from datai.visualization import Examples
+from datai.data_cleaning import DataCleaning
+from datai.auto_plot import AutoPlot
+from datai.datasets import Datasets
 ```
 
 ### 2. Visualize Data
