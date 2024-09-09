@@ -13,10 +13,10 @@ Welcome to **Datai**! This library provides tools to visualize data easily, clea
 - **Example Datasets**: Load popular datasets like Iris, Titanic, and more for quick experimentation and testing.
 
 ## Installation
-```
-To install the library, use pip:
 
-```bash
+To install the library, use pip:
+```
+bash
 pip install datai
 ```
 
