@@ -11,9 +11,9 @@ Welcome to **Datai**! This library provides tools to visualize data easily, clea
 - **Data Cleaning**: Clean and preprocess your data with built-in utilities for handling missing values, normalizing data, and more.
 - **Auto Plotting**: Automatically generate the most suitable plot based on your dataset's characteristics.
 - **Example Datasets**: Load popular datasets like Iris, Titanic, and more for quick experimentation and testing.
-```
-## Installation
 
+## Installation
+```
 To install the library, use pip:
 
 ```bash
