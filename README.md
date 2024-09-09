@@ -15,6 +15,7 @@ Welcome to **Datai**! This library provides tools to visualize data easily, clea
 ## Installation
 
 To install the library, use pip:
+```
 
 ```bash
 pip install datai
@@ -74,5 +75,4 @@ For any questions or feedback, please reach out at [m.ans.cs@outlook.com](mailto
 
 
 Thank you for using **Datai**! We hope it makes your data analysis journey easier and more enjoyable.
-```
 ```
