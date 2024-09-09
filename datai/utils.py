@@ -89,26 +89,3 @@ class Utils:
             raise ValueError("Invalid normalization method. Use 'min-max' or 'z-score'.")
         
         return data
-
-    @staticmethod
-    def split_data(data, target_column, test_size=0.2, random_state=None):
-        """
-        Split the dataset into training and testing sets.
-
-        Parameters:
-        - data: The dataset to split.
-        - target_column: The column to predict (y).
-        - test_size: The proportion of the dataset to include in the test split (default 0.2).
-        - random_state: The seed used by the random number generator (optional).
-
-        Returns:
-        - pd.DataFrame: Training and testing features and labels.
-        """
-        from sklearn.model_selection import train_test_split
-
-        X = data.drop(columns=[target_column])
-        y = data[target_column]
-        
-        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=test_size, random_state=random_state)
-        
-        return X_train, X_test, y_train, y_test
