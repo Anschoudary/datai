@@ -3,43 +3,72 @@
 import matplotlib.pyplot as plt
 import pandas as pd
 import numpy as np
+import seaborn as sns
 
 class AutoPlot:
     """Class for automatically plotting the right type of graph based on the dataset."""
 
     @staticmethod
-    def auto_plot(data: pd.DataFrame, x_column: str = None, y_column: str = None):
+    def auto_plot(dataset):
         """
-        Automatically plot the most suitable graph for the given data.
-        
+        Suggests a type of plot based on the characteristics of the dataset and provides examples.
+
         Parameters:
-        - data: Pandas DataFrame containing the dataset.
-        - x_column: The column to be used on the x-axis (optional).
-        - y_column: The column to be used on the y-axis (optional).
+        dataset (pd.DataFrame): The dataset to analyze.
+
+        Returns:
+        None
         """
-        # If x_column and y_column are not provided, automatically select them
-        if x_column is None or y_column is None:
-            numeric_cols = data.select_dtypes(include=[np.number]).columns
-            categorical_cols = data.select_dtypes(include=['object']).columns
-
-            if len(numeric_cols) >= 2:
-                x_column, y_column = numeric_cols[:2]
-            elif len(numeric_cols) == 1 and len(categorical_cols) >= 1:
-                x_column, y_column = categorical_cols[0], numeric_cols[0]
-            else:
-                print("Not enough data for automatic plotting. Please provide specific columns.")
-                return
-
-        x_data = data[x_column]
-        y_data = data[y_column]
+        if not isinstance(dataset, pd.DataFrame):
+            raise ValueError("The input dataset must be a pandas DataFrame.")
         
-        if np.issubdtype(y_data.dtype, np.number):
-            if len(x_data.unique()) < 20:
-                AutoPlot.plot_bar_chart(x_data, y_data)
+        # Analyze the dataset
+        num_rows, num_cols = dataset.shape
+        data_types = dataset.dtypes
+        numeric_cols = data_types[data_types != 'object'].index
+        categorical_cols = data_types[data_types == 'object'].index
+
+        # Print dataset summary
+        print(f"Number of rows: {num_rows}")
+        print(f"Number of columns: {num_cols}")
+        print(f"Numeric columns: {numeric_cols.tolist()}")
+        print(f"Categorical columns: {categorical_cols.tolist()}")
+
+    # Function to display plots
+        def display_plot(plot_func, **kwargs):
+            plt.figure(figsize=(10, 6))
+            plot_func(**kwargs)
+            plt.show()
+
+        # Suggest plot types based on dataset characteristics
+        if numeric_cols.size > 0:
+            if categorical_cols.size > 0:
+                print("Suggested plots:")
+                print("- Pairplot: To visualize relationships between numeric columns.")
+                display_plot(sns.pairplot, data=dataset, hue=categorical_cols[0] if categorical_cols.size > 0 else None)
+                print("- Countplot: To visualize the distribution of categorical columns.")
+                display_plot(sns.countplot, x=categorical_cols[0], data=dataset)
+                print("- Boxplot: To visualize the distribution of numeric data grouped by a categorical column.")
+                display_plot(sns.boxplot, x=categorical_cols[0], y=numeric_cols[0], data=dataset)
             else:
-                AutoPlot.plot_line_chart(x_data, y_data)
+                print("Suggested plots:")
+                print("- Histogram: For distribution of numeric data.")
+                display_plot(sns.histplot, x=numeric_cols[0], data=dataset)
+                print("- Boxplot: For distribution and outliers of numeric data.")
+                display_plot(sns.boxplot, y=numeric_cols[0], data=dataset)
         else:
-            AutoPlot.plot_scatter_plot(x_data, y_data)
+            if categorical_cols.size > 0:
+                print("Suggested plots:")
+                print("- Countplot: For frequency of categories.")
+                display_plot(sns.countplot, x=categorical_cols[0], data=dataset)
+                print("- Pie chart: For proportion of categories.")
+                category_counts = dataset[categorical_cols[0]].value_counts()
+                plt.figure(figsize=(10, 6))
+                plt.pie(category_counts, labels=category_counts.index, autopct='%1.1f%%')
+                plt.title('Pie Chart of Categorical Data')
+                plt.show()
+            else:
+                print("The dataset does not have clear numeric or categorical features for visualization.")
 
     @staticmethod
     def plot_bar_chart(x_data, y_data):
@@ -88,3 +117,5 @@ class AutoPlot:
         plt.show()
         
         print("Histograms: Displaying distribution of all numeric columns.")
+
+    
