@@ -13,6 +13,12 @@ class DataCleaning:
         """Display details about the dataset."""
         print("Dataset Information:")
         print(self.data.info())
+        print("\nData Types:")
+        print(self.data.dtypes)
+        print("\nNumber of Rows and Columns:")
+        print(self.data.shape)
+        print("\nDataset Summary:")
+        print(self.data.describe())
         print("\nFirst 5 rows of the dataset:")
         print(self.data.head())
         print("\nMissing values in each column:")
