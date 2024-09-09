@@ -1,6 +1,4 @@
 
-
-```markdown```
 #  Datai
 
 Welcome to **Datai**! This library provides tools to visualize data easily, clean datasets, and automatically generate appropriate plots for your data. Whether you're a beginner or an experienced data scientist, this library aims to simplify the data exploration and visualization process.
@@ -16,7 +14,7 @@ Welcome to **Datai**! This library provides tools to visualize data easily, clea
 
 To install the library, use pip:
 ```
-bash
+# bash
 pip install datai
 ```
 
