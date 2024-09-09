@@ -6,7 +6,3 @@ numpy==1.25.1
 # Data Visualization Libraries
 matplotlib==3.8.0
 seaborn==0.12.2
-
-# Data Cleaning Libraries
-scikit-learn==1.3.0
-
