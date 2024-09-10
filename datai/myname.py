@@ -42,8 +42,3 @@ def myName(name):
 
     # Show the animation
     plt.show()
-
-
-# Example usage
-name = "Hello, World!"
-myName(name)
