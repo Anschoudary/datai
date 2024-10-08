@@ -1,6 +1,4 @@
 
-
-```markdown
 #  Datai
 
 Welcome to **Datai**. This library provides tools to visualize data easily, clean datasets, and automatically generate appropriate plots for your data. Whether you're a beginner or an experienced data scientist, this library aims to simplify the data exploration and visualization process.
@@ -89,3 +87,4 @@ For any questions or feedback, please reach out at [m.ans.cs@outlook.com](mailto
 
 
 Thank you for using **Datai**! We hope it makes your data analysis journey easier and more enjoyable.
+```
