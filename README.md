@@ -1,7 +1,9 @@
 
+
+```markdown
 #  Datai
 
-Welcome to **Datai**! This library provides tools to visualize data easily, clean datasets, and automatically generate appropriate plots for your data. Whether you're a beginner or an experienced data scientist, this library aims to simplify the data exploration and visualization process.
+Welcome to **Datai**. This library provides tools to visualize data easily, clean datasets, and automatically generate appropriate plots for your data. Whether you're a beginner or an experienced data scientist, this library aims to simplify the data exploration and visualization process.
 
 ## Features
 
@@ -13,53 +15,68 @@ Welcome to **Datai**! This library provides tools to visualize data easily, clea
 ## Installation
 
 To install the library, use pip:
-```
-# bash
+
+```bash
 pip install datai
 ```
 
 ## Basic Usage
 
-### 1. Importing the Library
 
-To use the library, start by importing the relevant modules:
-
-```python
-from datai.visualization import Examples
-from datai.data_cleaning import DataCleaning
-from datai.auto_plot import AutoPlot
-from datai.datasets import Datasets
-```
-
-### 2. Visualize Data
+### 1. Visualize Data
 
 Create simple visualizations with just a few lines of code:
 
 ```python
 # Example: Create a bar chart
-examples = Examples()
-examples.barchart()
+
+from datai.visualization import Examples
+Examples.barchart()
 ```
 
-### 3. Clean Data
+### 2. Clean Data
 
 Easily clean and preprocess your data:
 
 ```python
-# Load a dataset
-titanic_data = Datasets.load_titanic_dataset()
+# Data cleaning
+import seaborn as sns
+from datai.data_cleaning import DataCleaning
+
+# Load the Iris dataset
+iris_data = sns.load_dataset('iris')
 
 # Clean the data
-cleaned_data = DataCleaning.clean_data(titanic_data)
+cleaner = DataCleaning(iris_data)
+cleaned_data = cleaner.get_cleaned_data()
 ```
 
-### 4. Auto Plot
+### 3. Auto Plot
 
 Automatically generate a plot based on your dataset:
 
 ```python
 # Auto plot a dataset
-AutoPlot.plot_data(cleaned_data)
+import seaborn as sns
+from datai.auto_plot import AutoPlot
+
+tips = sns.load_dataset('tips')
+
+AutoPlot.auto_plot(tips)
+```
+
+You can also plot a chart of your choice
+```python
+x_data = tips['total_bill']
+y_data = tips['tip']
+AutoPlot.plot_scatter_plot(x_data, y_data)
+````
+
+### 4. Gift
+Here's an interesting feature in the library. You can animate your name.
+```python
+from datai.gift import Gift
+Gift.myName("Datai")
 ```
 
 ## Contributing
@@ -72,4 +89,3 @@ For any questions or feedback, please reach out at [m.ans.cs@outlook.com](mailto
 
 
 Thank you for using **Datai**! We hope it makes your data analysis journey easier and more enjoyable.
-```
