@@ -1,7 +1,7 @@
 # datai/__init__.py
 
 # Version of the library
-__version__ = "1.0"
+__version__ = "1.1.1"
 
 # Author of the library
 __author__ = "M Ans"
