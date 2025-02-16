@@ -1,421 +1,1151 @@
-# datai/visualization.py
-
 import numpy as np
 import seaborn as sns
 import matplotlib.pyplot as plt
 from pandas.plotting import parallel_coordinates
+import pandas as pd  # Import pandas
 
-class Examples:
-    """Class for generating example plots using built-in datasets from pandas and seaborn."""
+def bar_chart(data="titanic", x=None, y=None, title=None, x_label=None, y_label=None):
+    """
+    Generates a bar chart for a given dataset and specified columns.
 
-    @staticmethod
-    def bar_chart():
-        """Generates two bar charts in a single image: one for the Titanic dataset and one for the Tips dataset."""
-        # Load datasets
-        titanic = sns.load_dataset("titanic")
-        tips = sns.load_dataset("tips")
+    Args:
+        data (str or pd.DataFrame, optional): The dataset to use. Defaults to "titanic".
+            Can be "titanic", "tips", or a pandas DataFrame.
+        x (str, optional): The column to use for the x-axis. Defaults to None.
+        y (str, optional): The column to use for the y-axis. Defaults to None.
+        title (str, optional): The title of the plot. Defaults to None.
+        x_label (str, optional): The label for the x-axis. Defaults to None.
+        y_label (str, optional): The label for the y-axis. Defaults to None.
+    """
 
-        # Create subplots
-        fig, axes = plt.subplots(nrows=1, ncols=2, figsize=(12, 6))
+    # Example 1: Titanic Dataset
+    if data == "titanic":
+        df = sns.load_dataset("titanic")
+        x = "class" if x is None else x
+        y = "survived" if y is None else y
+        title = "Survival by Class - Titanic" if title is None else title
+        x_label = "Class" if x_label is None else x_label
+        y_label = "Survival Rate" if y_label is None else y_label
 
-        # Plot Titanic dataset: count of survivors by class
-        sns.barplot(x="class", y="survived", data=titanic, ax=axes[0], errorbar=None)
-        axes[0].set_title("Survival by Class - Titanic")
-        axes[0].set_ylabel("Survival Rate")
-
-        # Plot Tips dataset: total bill by day
-        sns.barplot(x="day", y="total_bill", data=tips, ax=axes[1], errorbar=None)
-        axes[1].set_title("Total Bill by Day - Tips")
-        axes[1].set_ylabel("Average Total Bill")
-
-        # Show the plot
+        plt.figure(figsize=(8, 6))
+        sns.barplot(x=x, y=y, data=df, errorbar=None)
+        plt.title(title)
+        plt.xlabel(x_label)
+        plt.ylabel(y_label)
         plt.show()
+        print(f"Bar chart of {x} vs {y} from the Titanic dataset.")
 
-        # Description
-        description = """
-        This visualization displays two bar charts side-by-side: one for the Titanic dataset and one for the Tips dataset.
-        
-        The Titanic bar chart shows the survival rate by passenger class (First, Second, Third). We observe higher survival rates 
-        in First Class compared to other classes.
-        
-        The Tips bar chart shows the average total bill by day of the week. This provides insight into which days generate the 
-        highest revenue, with Saturday showing the highest average bill amount.
-        """
-        print(description)
+    # Example 2: Tips Dataset
+    elif data == "tips":
+        df = sns.load_dataset("tips")
+        x = "day" if x is None else x
+        y = "total_bill" if y is None else y
+        title = "Total Bill by Day - Tips" if title is None else title
+        x_label = "Day" if x_label is None else x_label
+        y_label = "Average Total Bill" if y_label is None else y_label
 
-
-    @staticmethod
-    def scatter_plot():
-        """Generates two scatter plots in a single image: one for the Iris dataset and one for the mpg dataset."""
-        # Load datasets
-        iris = sns.load_dataset("iris")
-        mpg = sns.load_dataset("mpg")
-
-        # Create subplots
-        fig, axes = plt.subplots(nrows=1, ncols=2, figsize=(12, 6))
-
-        # Plot Iris dataset
-        sns.scatterplot(x="sepal_length", y="sepal_width", data=iris, hue="species", ax=axes[0])
-        axes[0].set_title("Iris Dataset")
-
-        # Plot mpg dataset
-        sns.scatterplot(x="horsepower", y="mpg", data=mpg, hue="cylinders", ax=axes[1])
-        axes[1].set_title("mpg Dataset")
-
-        # Show the plot
+        plt.figure(figsize=(8, 6))
+        sns.barplot(x=x, y=y, data=df, errorbar=None)
+        plt.title(title)
+        plt.xlabel(x_label)
+        plt.ylabel(y_label)
         plt.show()
+        print(f"Bar chart of {x} vs {y} from the Tips dataset.")
 
-        # Description
-        description = """
-        This visualization displays two scatter plots side-by-side: one for the Iris dataset and one for the mpg dataset.
-        The Iris plot shows the relationship between sepal length and sepal width, colored by species.
-        The mpg plot shows the relationship between horsepower and miles per gallon, colored by the number of cylinders.
-        """
-        print(description)
+    elif isinstance(data, pd.DataFrame):
+        df = data
+        if x is None or y is None:
+            raise ValueError("x and y parameters must be specified for a custom DataFrame.")
+        title = "Bar Chart" if title is None else title
+        x_label = x if x_label is None else x_label
+        y_label = y if y_label is None else y_label
 
-    @staticmethod
-    def line_chart():
-        """Generates two line charts in a single image: one for the Flights dataset and one for the Tips dataset."""
-        # Load datasets
-        flights = sns.load_dataset("flights")
-        tips = sns.load_dataset("tips")
-
-        # Create subplots
-        fig, axes = plt.subplots(nrows=1, ncols=2, figsize=(12, 6))
-
-        # Plot Flights dataset: passengers over time
-        sns.lineplot(x="year", y="passengers", data=flights, ax=axes[0], marker="o")
-        axes[0].set_title("Passengers Over Time - Flights")
-        axes[0].set_ylabel("Number of Passengers")
-
-        # Plot Tips dataset: total bill over time (sorted by size as a proxy for order)
-        tips_sorted = tips.sort_values("size")
-        sns.lineplot(x=tips_sorted.index, y="total_bill", data=tips_sorted, ax=axes[1], marker="o")
-        axes[1].set_title("Total Bill by Order Size - Tips")
-        axes[1].set_ylabel("Total Bill")
-
-        # Show the plot
+        plt.figure(figsize=(8, 6))
+        sns.barplot(x=x, y=y, data=df, errorbar=None)
+        plt.title(title)
+        plt.xlabel(x_label)
+        plt.ylabel(y_label)
         plt.show()
+        print(f"Bar chart of {x} vs {y} from the provided DataFrame.")
+    else:
+        raise ValueError("Invalid dataset name. Choose 'titanic', 'tips', or provide a pandas DataFrame.")
 
-        # Description
-        description = """
-        This visualization displays two line charts side-by-side: one for the Flights dataset and one for the Tips dataset.
-        
-        The Flights line chart shows the number of passengers per year, highlighting the growth in air travel from 1949 to 1960.
-        
-        The Tips line chart shows how the total bill amount changes based on order size, where the X-axis represents each order 
-        (sorted by party size), and the Y-axis represents the total bill. Larger parties tend to generate higher total bills.
-        """
-        print(description)
+def scatter_plot(data="iris", x=None, y=None, hue=None, title=None, x_label=None, y_label=None):
+    """
+    Generates a scatter plot for a given dataset.
 
+    Args:
+        data (str or pd.DataFrame, optional): The dataset to use. Defaults to "iris".
+            Can be "iris", "mpg", or a pandas DataFrame.
+        x (str, optional): The column to use for the x-axis. Defaults to None.
+        y (str, optional): The column to use for the y-axis. Defaults to None.
+        hue (str, optional): The column to use for the color hue. Defaults to None.
+        title (str, optional): The title of the plot. Defaults to None.
+        x_label (str, optional): The label for the x-axis. Defaults to None.
+        y_label (str, optional): The label for the y-axis. Defaults to None.
+    """
 
-    @staticmethod
-    def histogram():
-        """Generates two histograms in a single image: one for the Titanic dataset and one for the Tips dataset."""
-        # Load datasets
-        titanic = sns.load_dataset("titanic")
-        tips = sns.load_dataset("tips")
+    # Example 1: Iris Dataset
+    if data == "iris":
+        df = sns.load_dataset("iris")
+        x = "sepal_length" if x is None else x
+        y = "sepal_width" if y is None else y
+        hue = "species" if hue is None else hue
+        title = "Iris Dataset - Sepal Length vs Sepal Width" if title is None else title
+        x_label = "Sepal Length" if x_label is None else x_label
+        y_label = "Sepal Width" if y_label is None else y_label
 
-        # Create subplots
-        fig, axes = plt.subplots(nrows=1, ncols=2, figsize=(12, 6))
-
-        # Plot Titanic dataset: distribution of age
-        sns.histplot(titanic['age'].dropna(), bins=20, kde=True, ax=axes[0], color='skyblue')
-        axes[0].set_title("Age Distribution - Titanic")
-        axes[0].set_xlabel("Age")
-        axes[0].set_ylabel("Frequency")
-
-        # Plot Tips dataset: distribution of total bill
-        sns.histplot(tips['total_bill'], bins=20, kde=True, ax=axes[1], color='lightgreen')
-        axes[1].set_title("Total Bill Distribution - Tips")
-        axes[1].set_xlabel("Total Bill")
-        axes[1].set_ylabel("Frequency")
-
-        # Show the plot
+        plt.figure(figsize=(8, 6))
+        sns.scatterplot(x=x, y=y, data=df, hue=hue)
+        plt.title(title)
+        plt.xlabel(x_label)
+        plt.ylabel(y_label)
         plt.show()
+        print(f"Scatter plot of {x} vs {y} from the Iris dataset.")
 
-        # Description
-        description = """
-        This visualization displays two histograms side-by-side: one for the Titanic dataset and one for the Tips dataset.
+    # Example 2: MPG Dataset
+    elif data == "mpg":
+        df = sns.load_dataset("mpg")
+        x = "horsepower" if x is None else x
+        y = "mpg" if y is None else y
+        hue = "cylinders" if hue is None else hue
+        title = "MPG Dataset - Horsepower vs MPG" if title is None else title
+        x_label = "Horsepower" if x_label is None else x_label
+        y_label = "Miles Per Gallon" if y_label is None else y_label
 
-        The Titanic histogram shows the distribution of passengers' ages, with most passengers falling between 20 and 40 years old. 
-        A KDE curve (kernel density estimate) is overlaid to give a smooth estimate of the age distribution.
-
-        The Tips histogram shows the distribution of total bills from the restaurant dataset. The majority of the bills fall 
-        between $10 and $30, with a few higher amounts, indicating occasional larger bills.
-        """
-        print(description)
-
-    @staticmethod
-    def box_plot():
-        """Generates two box plots in a single image: one for the Titanic dataset and one for the Tips dataset."""
-        # Load datasets
-        titanic = sns.load_dataset("titanic")
-        tips = sns.load_dataset("tips")
-
-        # Create subplots
-        fig, axes = plt.subplots(nrows=1, ncols=2, figsize=(12, 6))
-
-        # Plot Titanic dataset: age distribution by class
-        sns.boxplot(x="class", y="age", data=titanic, ax=axes[0], palette="Set2")
-        axes[0].set_title("Age Distribution by Class - Titanic")
-        axes[0].set_ylabel("Age")
-
-        # Plot Tips dataset: total bill distribution by day
-        sns.boxplot(x="day", y="total_bill", data=tips, ax=axes[1], palette="Set1")
-        axes[1].set_title("Total Bill Distribution by Day - Tips")
-        axes[1].set_ylabel("Total Bill")
-
-        # Show the plot
+        plt.figure(figsize=(8, 6))
+        sns.scatterplot(x=x, y=y, data=df, hue=hue)
+        plt.title(title)
+        plt.xlabel(x_label)
+        plt.ylabel(y_label)
         plt.show()
+        print(f"Scatter plot of {x} vs {y} from the MPG dataset.")
 
-        # Description
-        description = """
-        This visualization displays two box plots side-by-side: one for the Titanic dataset and one for the Tips dataset.
+    elif isinstance(data, pd.DataFrame):
+        df = data
+        if x is None or y is None:
+            raise ValueError("x and y parameters must be specified for a custom DataFrame.")
+        title = "Scatter Plot" if title is None else title
+        x_label = x if x_label is None else x_label
+        y_label = y if y_label is None else y_label
 
-        The Titanic box plot shows the distribution of passengers' ages across different classes (First, Second, Third). The box plot 
-        highlights the median age and spread, with First Class passengers tending to be older on average than those in Third Class.
-
-        The Tips box plot shows the distribution of total bills by day of the week. This plot reveals the spread and outliers 
-        for total bills on each day, with Sunday showing some of the highest bills and largest variability.
-        """
-        print(description)
-
-
-    @staticmethod
-    def heatmap():
-        """Generates two heatmaps in a single image: one for the Correlation of the Titanic dataset and one for the Flights dataset."""
-        # Load datasets
-        titanic = sns.load_dataset("titanic")
-        flights = sns.load_dataset("flights").pivot_table(index="month", columns="year", values="passengers", observed=False)
-
-        # Filter Titanic dataset for only numeric columns (to avoid 'male'/'female' issue)
-        titanic_numeric = titanic.select_dtypes(include=["float64", "int64"])
-
-        # Create subplots
-        fig, axes = plt.subplots(nrows=1, ncols=2, figsize=(14, 6))
-
-        # Plot Titanic dataset: correlation heatmap
-        sns.heatmap(titanic_numeric.corr(), annot=True, cmap="coolwarm", ax=axes[0])
-        axes[0].set_title("Titanic Dataset Correlation Heatmap")
-
-        # Plot Flights dataset: passenger count heatmap
-        sns.heatmap(flights, cmap="YlGnBu", ax=axes[1], linewidths=0.5, annot=True, fmt=".1f")
-        axes[1].set_title("Flights Dataset Heatmap (Passengers per Year/Month)")
-
-        # Show the plot
+        plt.figure(figsize=(8, 6))
+        sns.scatterplot(x=x, y=y, data=df, hue=hue)
+        plt.title(title)
+        plt.xlabel(x_label)
+        plt.ylabel(y_label)
         plt.show()
+        print(f"Scatter plot of {x} vs {y} from the provided DataFrame.")
+    else:
+        raise ValueError("Invalid dataset name. Choose 'iris', 'mpg', or provide a pandas DataFrame.")
 
-        # Description
-        description = """
-        This visualization displays two heatmaps side-by-side: one for the Titanic dataset and one for the Flights dataset.
+def line_chart(data="flights", x=None, y=None, title=None, x_label=None, y_label=None):
+    """
+    Generates a line chart for a given dataset.
 
-        The Titanic heatmap shows the correlation matrix between numeric variables, where darker shades indicate stronger 
-        positive correlations (e.g., between 'fare' and 'class') and negative correlations (e.g., 'age' and 'survived').
-        
-        The Flights heatmap shows the number of air passengers for each month from 1949 to 1960. The darker areas indicate 
-        higher passenger counts, with a visible growth in air travel over time, particularly in the later years.
-        """
-        print(description)
+    Args:
+        data (str or pd.DataFrame, optional): The dataset to use. Defaults to "flights".
+            Can be "flights", "tips", or a pandas DataFrame.
+        x (str, optional): The column to use for the x-axis. Defaults to None.
+        y (str, optional): The column to use for the y-axis. Defaults to None.
+        title (str, optional): The title of the plot. Defaults to None.
+        x_label (str, optional): The label for the x-axis. Defaults to None.
+        y_label (str, optional): The label for the y-axis. Defaults to None.
+    """
 
-    @staticmethod
-    def area_chart():
-        """Generates two area charts in a single image: one for the Tips dataset and one for the Planets dataset."""
-        # Load datasets
-        tips = sns.load_dataset("tips").groupby("day").agg({"total_bill": "sum"}).reset_index()
-        planets = sns.load_dataset("planets")
+    # Example 1: Flights Dataset
+    if data == "flights":
+        df = sns.load_dataset("flights")
+        x = "year" if x is None else x
+        y = "passengers" if y is None else y
+        title = "Passengers Over Time - Flights" if title is None else title
+        x_label = "Year" if x_label is None else x_label
+        y_label = "Number of Passengers" if y_label is None else y_label
 
-        # Aggregate planets data by year and count methods of discovery
-        planets_by_year = planets.groupby("year").size().reset_index(name='discoveries')
-
-        # Create subplots
-        fig, axes = plt.subplots(nrows=1, ncols=2, figsize=(14, 6))
-
-        # Plot Tips dataset: total bill area chart by day
-        axes[0].fill_between(tips["day"], tips["total_bill"], color="skyblue", alpha=0.5)
-        sns.lineplot(x="day", y="total_bill", data=tips, ax=axes[0], marker="o", color="blue")
-        axes[0].set_title("Total Bill Area Chart - Tips")
-        axes[0].set_ylabel("Total Bill")
-
-        # Plot Planets dataset: number of discoveries by year (using the planets dataset as a proxy)
-        axes[1].fill_between(planets_by_year["year"], planets_by_year["discoveries"], color="lightgreen", alpha=0.5)
-        sns.lineplot(x="year", y="discoveries", data=planets_by_year, ax=axes[1], marker="o", color="green")
-        axes[1].set_title("Planet Discovery Count Over Time - Area Chart")
-        axes[1].set_ylabel("Number of Discoveries")
-
-        # Show the plot
+        plt.figure(figsize=(8, 6))
+        sns.lineplot(x=x, y=y, data=df, marker="o")
+        plt.title(title)
+        plt.xlabel(x_label)
+        plt.ylabel(y_label)
         plt.show()
+        print(f"Line chart of {x} vs {y} from the Flights dataset.")
 
-        # Description
-        description = """
-        This visualization displays two area charts side-by-side: one for the Tips dataset and one for the Planets dataset.
+    # Example 2: Tips Dataset
+    elif data == "tips":
+        df = sns.load_dataset("tips").sort_values("size")
+        x = df.index if x is None else x
+        y = "total_bill" if y is None else y
+        title = "Total Bill by Order Size - Tips" if title is None else title
+        x_label = "Order Index" if x_label is None else x_label
+        y_label = "Total Bill" if y_label is None else y_label
 
-        The Tips area chart shows the total bill amounts for each day of the week, demonstrating that weekends (Saturday and Sunday) 
-        have higher total bills compared to weekdays.
-        
-        The Planet Discovery Count area chart shows the number of exoplanet discoveries over time, grouped by year. The area 
-        underneath the line represents the cumulative count of discoveries, highlighting an upward trend in discoveries over the years.
-        """
-        print(description)
-
-
-    @staticmethod
-    def pie_chart():
-        """Generates two pie charts in a single image: one for the Tips dataset (total bill by day) and one for the Titanic dataset (survival rate by class)."""
-        # Load datasets
-        tips = sns.load_dataset("tips").groupby("day").agg({"total_bill": "sum"}).reset_index()
-        titanic = sns.load_dataset("titanic").groupby("class").agg({"survived": "sum"}).reset_index()
-
-        # Create subplots
-        fig, axes = plt.subplots(nrows=1, ncols=2, figsize=(14, 6))
-
-        # Plot pie chart for total bill in the Tips dataset
-        axes[0].pie(tips["total_bill"], labels=tips["day"], autopct='%1.1f%%', startangle=90, colors=sns.color_palette("Set2"))
-        axes[0].set_title("Total Bill Distribution by Day - Tips")
-
-        # Plot pie chart for survival rate by class in the Titanic dataset
-        axes[1].pie(titanic["survived"], labels=titanic["class"], autopct='%1.1f%%', startangle=90, colors=sns.color_palette("Set3"))
-        axes[1].set_title("Survival Rate by Class - Titanic")
-
-        # Show the plot
+        plt.figure(figsize=(8, 6))
+        sns.lineplot(x=x, y=y, data=df, marker="o")
+        plt.title(title)
+        plt.xlabel(x_label)
+        plt.ylabel(y_label)
         plt.show()
+        print(f"Line chart of {x} vs {y} from the Tips dataset.")
 
-        # Description
-        description = """
-        This visualization displays two pie charts side-by-side: one for the Tips dataset and one for the Titanic dataset.
+    elif isinstance(data, pd.DataFrame):
+        df = data
+        if x is None or y is None:
+            raise ValueError("x and y parameters must be specified for a custom DataFrame.")
+        title = "Line Chart" if title is None else title
+        x_label = x if x_label is None else x_label
+        y_label = y if y_label is None else y_label
 
-        The first pie chart shows the distribution of total bill amounts across different days of the week from the Tips dataset. 
-        It helps visualize the proportion of total bills generated on each day, showing that Saturdays and Sundays have the highest shares.
-        
-        The second pie chart shows the survival rate based on passenger class from the Titanic dataset. It highlights that a larger proportion 
-        of survivors were from the first class, with progressively fewer survivors in the second and third classes.
-        """
-        print(description)
-
-
-
-    @staticmethod
-    def violin_plot():
-        """Generates two violin plots in a single image: one for the Tips dataset (total bill by day) and one for the Penguins dataset (flipper length by species)."""
-        # Load datasets
-        tips = sns.load_dataset("tips")
-        penguins = sns.load_dataset("penguins")
-
-        # Create subplots
-        fig, axes = plt.subplots(nrows=1, ncols=2, figsize=(14, 6))
-
-        # Plot violin plot for total bill in the Tips dataset by day
-        sns.violinplot(x="day", y="total_bill", data=tips, palette="muted", ax=axes[0], hue="sex", split=True)
-        axes[0].set_title("Total Bill Distribution by Day - Tips")
-
-        # Plot violin plot for flipper length in the Penguins dataset by species
-        sns.violinplot(x="species", y="flipper_length_mm", data=penguins, palette="coolwarm", ax=axes[1], hue="sex", split=True)
-        axes[1].set_title("Flipper Length Distribution by Species - Penguins")
-
-        # Show the plot
+        plt.figure(figsize=(8, 6))
+        sns.lineplot(x=x, y=y, data=df, marker="o")
+        plt.title(title)
+        plt.xlabel(x_label)
+        plt.ylabel(y_label)
         plt.show()
+        print(f"Line chart of {x} vs {y} from the provided DataFrame.")
+    else:
+        raise ValueError("Invalid dataset name. Choose 'flights', 'tips', or provide a pandas DataFrame.")
 
-        # Description
-        description = """
-        This visualization displays two violin plots side-by-side: one for the Tips dataset and one for the Penguins dataset.
+def histogram(data="titanic", column=None, title=None, x_label=None, y_label=None, bins=20, color='skyblue'):
+    """
+    Generates a histogram for a given dataset and column.
 
-        The first violin plot shows the distribution of total bill amounts across different days of the week from the Tips dataset. 
-        The width of the violin represents the density of the data, showing that Fridays and Saturdays have more variability in the total bill values.
-        
-        The second violin plot shows the distribution of flipper lengths across different penguin species from the Penguins dataset. 
-        It illustrates the range and distribution of flipper lengths for each species, where Gentoo penguins tend to have longer flippers compared to the other species.
-        """
-        print(description)
+    Args:
+        data (str or pd.DataFrame, optional): The dataset to use. Defaults to "titanic".
+            Can be "titanic", "tips", or a pandas DataFrame.
+        column (str, optional): The column to plot the histogram for. Defaults to None.
+        title (str, optional): The title of the plot. Defaults to None.
+        x_label (str, optional): The label for the x-axis. Defaults to None.
+        y_label (str, optional): The label for the y-axis. Defaults to None.
+        bins (int, optional): The number of bins to use for the histogram. Defaults to 20.
+        color (str, optional): The color of the histogram. Defaults to 'skyblue'.
+    """
 
+    # Example 1: Titanic Dataset
+    if data == "titanic":
+        df = sns.load_dataset("titanic")
+        column = 'age' if column is None else column
+        column_data = df['age'].dropna()
+        title = "Age Distribution - Titanic" if title is None else title
+        x_label = "Age" if x_label is None else x_label
+        y_label = "Frequency" if y_label is None else y_label
 
-    @staticmethod
-    def parallel_coordinates_plot():
-        """Generates a parallel coordinates plot using Pandas."""
-        # Load dataset
-        iris = sns.load_dataset("iris")
+        plt.figure(figsize=(8, 6))
+        sns.histplot(column_data, bins=bins, kde=True, color=color)
+        plt.title(title)
+        plt.xlabel(x_label)
+        plt.ylabel(y_label)
+        plt.show()
+        print(f"Histogram of {column} from the Titanic dataset.")
 
-        # Create the plot
+    # Example 2: Tips Dataset
+    elif data == "tips":
+        df = sns.load_dataset("tips")
+        column = 'total_bill' if column is None else column
+        column_data = df['total_bill']
+        title = "Total Bill Distribution - Tips" if title is None else title
+        x_label = "Total Bill" if x_label is None else x_label
+        y_label = "Frequency" if y_label is None else y_label
+
+        plt.figure(figsize=(8, 6))
+        sns.histplot(column_data, bins=bins, kde=True, color=color)
+        plt.title(title)
+        plt.xlabel(x_label)
+        plt.ylabel(y_label)
+        plt.show()
+        print(f"Histogram of {column} from the Tips dataset.")
+
+    elif isinstance(data, pd.DataFrame):
+        df = data
+        if column is None:
+            raise ValueError("Column parameter must be specified for a custom DataFrame.")
+        column_data = df[column].dropna()
+        title = f"Distribution of {column}" if title is None else title
+        x_label = column if x_label is None else x_label
+        y_label = "Frequency" if y_label is None else y_label
+
+        plt.figure(figsize=(8, 6))
+        sns.histplot(column_data, bins=bins, kde=True, color=color)
+        plt.title(title)
+        plt.xlabel(x_label)
+        plt.ylabel(y_label)
+        plt.show()
+        print(f"Histogram of {column} from the provided DataFrame.")
+
+    else:
+        raise ValueError("Invalid dataset name. Choose 'titanic', 'tips', or provide a pandas DataFrame.")
+
+def box_plot(data="titanic", x=None, y=None, title=None, x_label=None, y_label=None, palette="Set2"):
+    """
+    Generates a box plot for a given dataset.
+
+    Args:
+        data (str or pd.DataFrame, optional): The dataset to use. Defaults to "titanic".
+            Can be "titanic", "tips", or a pandas DataFrame.
+        x (str, optional): The column to use for the x-axis. Defaults to None.
+        y (str, optional): The column to use for the y-axis. Defaults to None.
+        title (str, optional): The title of the plot. Defaults to None.
+        x_label (str, optional): The label for the x-axis. Defaults to None.
+        y_label (str, optional): The label for the y-axis. Defaults to None.
+        palette (str, optional): The color palette to use. Defaults to "Set2".
+    """
+
+    # Example 1: Titanic Dataset
+    if data == "titanic":
+        df = sns.load_dataset("titanic")
+        x = "class" if x is None else x
+        y = "age" if y is None else y
+        title = "Age Distribution by Class - Titanic" if title is None else title
+        x_label = "Class" if x_label is None else x_label
+        y_label = "Age" if y_label is None else y_label
+
+        plt.figure(figsize=(8, 6))
+        sns.boxplot(x=x, y=y, data=df, palette=palette)
+        plt.title(title)
+        plt.xlabel(x_label)
+        plt.ylabel(y_label)
+        plt.show()
+        print(f"Box plot of {y} by {x} from the Titanic dataset.")
+
+    # Example 2: Tips Dataset
+    elif data == "tips":
+        df = sns.load_dataset("tips")
+        x = "day" if x is None else x
+        y = "total_bill" if y is None else y
+        title = "Total Bill Distribution by Day - Tips" if title is None else title
+        x_label = "Day" if x_label is None else x_label
+        y_label = "Total Bill" if y_label is None else y_label
+
+        plt.figure(figsize=(8, 6))
+        sns.boxplot(x=x, y=y, data=df, palette=palette)
+        plt.title(title)
+        plt.xlabel(x_label)
+        plt.ylabel(y_label)
+        plt.show()
+        print(f"Box plot of {y} by {x} from the Tips dataset.")
+
+    elif isinstance(data, pd.DataFrame):
+        df = data
+        if x is None or y is None:
+            raise ValueError("x and y parameters must be specified for a custom DataFrame.")
+        title = "Box Plot" if title is None else title
+        x_label = x if x_label is None else x_label
+        y_label = y if y_label is None else y_label
+
+        plt.figure(figsize=(8, 6))
+        sns.boxplot(x=x, y=y, data=df, palette=palette)
+        plt.title(title)
+        plt.xlabel(x_label)
+        plt.ylabel(y_label)
+        plt.show()
+        print(f"Box plot of {y} by {x} from the provided DataFrame.")
+
+    else:
+        raise ValueError("Invalid dataset name. Choose 'titanic', 'tips', or provide a pandas DataFrame.")
+
+def heatmap(data="titanic", corr_method="pearson", title=None, cmap="coolwarm"):
+    """
+    Generates a heatmap for a given dataset.
+
+    Args:
+        data (str or pd.DataFrame, optional): The dataset to use. Defaults to "titanic".
+            Can be "titanic", "flights", or a pandas DataFrame.
+        corr_method (str, optional): The correlation method to use. Defaults to "pearson".
+        title (str, optional): The title of the plot. Defaults to None.
+        cmap (str, optional): The color map to use. Defaults to "coolwarm".
+    """
+
+    # Example 1: Titanic Dataset
+    if data == "titanic":
+        df = sns.load_dataset("titanic").select_dtypes(include=["float64", "int64"])
+        title = "Titanic Dataset Correlation Heatmap" if title is None else title
+
+        plt.figure(figsize=(10, 8))
+        sns.heatmap(df.corr(method=corr_method), annot=True, cmap=cmap, linewidths=0.5, fmt=".2f")
+        plt.title(title)
+        plt.show()
+        print(f"Heatmap for the Titanic dataset.")
+
+    # Example 2: Flights Dataset
+    elif data == "flights":
+        df = sns.load_dataset("flights").pivot_table(index="month", columns="year", values="passengers", observed=False)
+        title = "Flights Dataset Heatmap (Passengers per Year/Month)" if title is None else title
+        cmap = "YlGnBu"
+
+        plt.figure(figsize=(10, 8))
+        sns.heatmap(df, annot=True, cmap=cmap, linewidths=0.5, fmt=".2f")
+        plt.title(title)
+        plt.show()
+        print(f"Heatmap for the Flights dataset.")
+
+    elif isinstance(data, pd.DataFrame):
+        df = data.corr(method=corr_method)
+        title = "Correlation Heatmap" if title is None else title
+
+        plt.figure(figsize=(10, 8))
+        sns.heatmap(df, annot=True, cmap=cmap, linewidths=0.5, fmt=".2f")
+        plt.title(title)
+        plt.show()
+        print(f"Heatmap for the provided DataFrame.")
+
+    else:
+        raise ValueError("Invalid dataset name. Choose 'titanic', 'flights', or provide a pandas DataFrame.")
+
+def area_chart(data="tips", x=None, y=None, title=None, x_label=None, y_label=None, color="skyblue"):
+    """
+    Generates an area chart for a given dataset.
+
+    Args:
+        data (str or pd.DataFrame, optional): The dataset to use. Defaults to "tips".
+            Can be "tips", "planets", or a pandas DataFrame.
+        x (str, optional): The column to use for the x-axis. Defaults to None.
+        y (str, optional): The column to use for the y-axis. Defaults to None.
+        title (str, optional): The title of the plot. Defaults to None.
+        x_label (str, optional): The label for the x-axis. Defaults to None.
+        y_label (str, optional): The label for the y-axis. Defaults to None.
+        color (str, optional): The color of the area. Defaults to "skyblue".
+    """
+
+    # Example 1: Tips Dataset
+    if data == "tips":
+        df = sns.load_dataset("tips").groupby("day", observed=False).agg({"total_bill": "sum"}).reset_index()
+        x = "day" if x is None else x
+        y = "total_bill" if y is None else y
+        title = "Total Bill Area Chart - Tips" if title is None else title
+        x_label = "Day" if x_label is None else x_label
+        y_label = "Total Bill" if y_label is None else y_label
+        line_color = "blue"
+
+        plt.figure(figsize=(8, 6))
+        plt.fill_between(df[x], df[y], color=color, alpha=0.5)
+        sns.lineplot(x=x, y=y, data=df, marker="o", color=line_color)
+        plt.title(title)
+        plt.xlabel(x_label)
+        plt.ylabel(y_label)
+        plt.show()
+        print(f"Area chart of {x} vs {y} from the Tips dataset.")
+
+    # Example 2: Planets Dataset
+    elif data == "planets":
+        df = sns.load_dataset("planets").groupby("year").size().reset_index(name='discoveries')
+        x = "year" if x is None else x
+        y = "discoveries" if y is None else y
+        title = "Planet Discovery Count Over Time - Area Chart" if title is None else title
+        x_label = "Year" if x_label is None else x_label
+        y_label = "Number of Discoveries" if y_label is None else y_label
+        color = "lightgreen"
+        line_color = "green"
+
+        plt.figure(figsize=(8, 6))
+        plt.fill_between(df[x], df[y], color=color, alpha=0.5)
+        sns.lineplot(x=x, y=y, data=df, marker="o", color=line_color)
+        plt.title(title)
+        plt.xlabel(x_label)
+        plt.ylabel(y_label)
+        plt.show()
+        print(f"Area chart of {x} vs {y} from the Planets dataset.")
+
+    elif isinstance(data, pd.DataFrame):
+        df = data
+        if x is None or y is None:
+            raise ValueError("x and y parameters must be specified for a custom DataFrame.")
+        title = "Area Chart" if title is None else title
+        x_label = x if x_label is None else x_label
+        y_label = y if y_label is None else y_label
+        line_color = "blue"
+
+        plt.figure(figsize=(8, 6))
+        plt.fill_between(df[x], df[y], color=color, alpha=0.5)
+        sns.lineplot(x=x, y=y, data=df, marker="o", color=line_color)
+        plt.title(title)
+        plt.xlabel(x_label)
+        plt.ylabel(y_label)
+        plt.show()
+        print(f"Area chart of {x} vs {y} from the provided DataFrame.")
+    else:
+        raise ValueError("Invalid dataset name. Choose 'tips', 'planets', or provide a pandas DataFrame.")
+
+def pie_chart(data="tips", labels=None, values=None, title=None):
+    """
+    Generates a pie chart for a given dataset.
+
+    Args:
+        data (str or pd.DataFrame, optional): The dataset to use. Defaults to "tips".
+            Can be "tips", "titanic", or a pandas DataFrame.
+        labels (list, optional): The labels for the pie chart. Defaults to None.
+        values (list, optional): The values for the pie chart. Defaults to None.
+        title (str, optional): The title of the plot. Defaults to None.
+    """
+
+    # Example 1: Tips Dataset
+    if data == "tips":
+        df = sns.load_dataset("tips").groupby("day", observed=False).agg({"total_bill": "sum"}).reset_index()
+        labels = df["day"] if labels is None else labels
+        values = df["total_bill"] if values is None else values
+        title = "Total Bill Distribution by Day - Tips" if title is None else title
+        colors = sns.color_palette("Set2")
+
+        plt.figure(figsize=(8, 6))
+        plt.pie(values, labels=labels, autopct='%1.1f%%', startangle=90, colors=colors)
+        plt.title(title)
+        plt.show()
+        print(f"Pie chart for the Tips dataset.")
+
+    # Example 2: Titanic Dataset
+    elif data == "titanic":
+        df = sns.load_dataset("titanic").groupby("class").agg({"survived": "sum"}).reset_index()
+        labels = df["class"] if labels is None else labels
+        values = df["survived"] if values is None else values
+        title = "Survival Rate by Class - Titanic" if title is None else title
+        colors = sns.color_palette("Set3")
+
+        plt.figure(figsize=(8, 6))
+        plt.pie(values, labels=labels, autopct='%1.1f%%', startangle=90, colors=colors)
+        plt.title(title)
+        plt.show()
+        print(f"Pie chart for the Titanic dataset.")
+
+    elif isinstance(data, pd.DataFrame):
+        df = data
+        if labels is None or values is None:
+            raise ValueError("labels and values parameters must be specified for a custom DataFrame.")
+        title = "Pie Chart" if title is None else title
+        colors = sns.color_palette("viridis")
+
+        plt.figure(figsize=(8, 6))
+        plt.pie(values, labels=labels, autopct='%1.1f%%', startangle=90, colors=colors)
+        plt.title(title)
+        plt.show()
+        print(f"Pie chart for the provided DataFrame.")
+
+    else:
+        raise ValueError("Invalid dataset name. Choose 'tips', 'titanic', or provide a pandas DataFrame.")
+
+def violin_plot(data="tips", x=None, y=None, hue=None, title=None, palette="muted"):
+    """
+    Generates a violin plot for a given dataset.
+
+    Args:
+        data (str or pd.DataFrame, optional): The dataset to use. Defaults to "tips".
+            Can be "tips", "penguins", or a pandas DataFrame.
+        x (str, optional): The column to use for the x-axis. Defaults to None.
+        y (str, optional): The column to use for the y-axis. Defaults to None.
+        hue (str, optional): The column to use for the hue. Defaults to None.
+        title (str, optional): The title of the plot. Defaults to None.
+        palette (str, optional): The color palette to use. Defaults to "muted".
+    """
+
+    # Example 1: Tips Dataset
+    if data == "tips":
+        df = sns.load_dataset("tips")
+        x = "day" if x is None else x
+        y = "total_bill" if y is None else y
+        hue = "sex" if hue is None else hue
+        title = "Total Bill Distribution by Day - Tips" if title is None else title
+
+        plt.figure(figsize=(8, 6))
+        sns.violinplot(x=x, y=y, data=df, palette=palette, hue=hue, split=True)
+        plt.title(title)
+        plt.show()
+        print(f"Violin plot for the Tips dataset.")
+
+    # Example 2: Penguins Dataset
+    elif data == "penguins":
+        df = sns.load_dataset("penguins")
+        x = "species" if x is None else x
+        y = "flipper_length_mm" if y is None else y
+        hue = "sex" if hue is None else hue
+        title = "Flipper Length Distribution by Species - Penguins" if title is None else title
+        palette = "coolwarm"
+
+        plt.figure(figsize=(8, 6))
+        sns.violinplot(x=x, y=y, data=df, palette=palette, hue=hue, split=True)
+        plt.title(title)
+        plt.show()
+        print(f"Violin plot for the Penguins dataset.")
+
+    elif isinstance(data, pd.DataFrame):
+        df = data
+        if x is None or y is None:
+            raise ValueError("x and y parameters must be specified for a custom DataFrame.")
+        title = "Violin Plot" if title is None else title
+
+        plt.figure(figsize=(8, 6))
+        sns.violinplot(x=x, y=y, data=df, palette=palette, hue=hue, split=True)
+        plt.title(title)
+        plt.show()
+        print(f"Violin plot for the provided DataFrame.")
+
+    else:
+        raise ValueError("Invalid dataset name. Choose 'tips', 'penguins', or provide a pandas DataFrame.")
+
+def parallel_coordinates_plot(data="iris", class_column="species", colors=None):
+    """
+    Generates a parallel coordinates plot for a given dataset.
+
+    Args:
+        data (str or pd.DataFrame, optional): The dataset to use. Defaults to "iris".
+            Can be "iris" or a pandas DataFrame.
+        class_column (str, optional): The column to use for the class labels. Defaults to "species".
+        colors (list, optional): The colors to use for each class. Defaults to None.
+    """
+
+    # Example 1: Iris Dataset
+    if data == "iris":
+        df = sns.load_dataset("iris")
+        colors = ["blue", "green", "red"] if colors is None else colors
+        title = "Parallel Coordinates Plot - Iris Dataset"
         plt.figure(figsize=(12, 6))
-        parallel_coordinates(iris, "species", color=["blue", "green", "red"])
-
-        # Add a title
-        plt.title("Parallel Coordinates Plot for Iris Dataset")
-
-        # Show the plot
+        parallel_coordinates(df, class_column, color=colors)
+        plt.title(title)
         plt.show()
+        print(f"Parallel Coordinates plot for the Iris dataset.")
 
-        # Description
-        description = """
-        This parallel coordinates plot visualizes the relationships between multiple features for different species in the Iris dataset.
-        Each line represents a data point, and the color indicates the species.
-        """
-        print(description)
-    
-    @staticmethod
-    def bubble_chart():
-        """Generates a bubble chart showing the relationship between horsepower, weight, and acceleration in the mpg dataset."""
-        # Load dataset
-        mpg = sns.load_dataset("mpg").dropna()
+    elif isinstance(data, pd.DataFrame):
+        df = data
+        title = "Parallel Coordinates Plot"
+        plt.figure(figsize=(12, 6))
+        parallel_coordinates(df, class_column, color=colors)
+        plt.title(title)
+        plt.show()
+        print(f"Parallel Coordinates plot for the provided DataFrame.")
+    else:
+        raise ValueError("Invalid dataset name. Choose 'iris' or provide a pandas DataFrame.")
+    if data == "iris":
+      df = sns.load_dataset("iris")
+      colors = ["blue", "green", "red"] if colors is None else colors
+      title = "Parallel Coordinates Plot - Iris Dataset"
+      plt.figure(figsize=(12, 6))
+      parallel_coordinates(df, class_column, color=colors)
+      plt.title(title)
+      plt.show()
+      print(f"Parallel Coordinates plot for the Iris dataset.")
 
-        # Create bubble chart
+    elif isinstance(data, pd.DataFrame):
+      df = data
+      title = "Parallel Coordinates Plot"
+      plt.figure(figsize=(12, 6))
+      parallel_coordinates(df, class_column, color=colors)
+      plt.title(title)
+      plt.show()
+      print(f"Parallel Coordinates plot for the provided DataFrame.")
+    else:
+      raise ValueError("Invalid dataset name. Choose 'iris' or provide a pandas DataFrame.")
+
+def bubble_chart(data="mpg", x="horsepower", y="weight", size="acceleration", color="mpg",
+                 x_label="Horsepower", y_label="Weight", color_label="Miles per Gallon (mpg)",
+                 title="Horsepower vs. Weight with Acceleration as Bubble Size (mpg Dataset)"):
+    """
+    Generates a bubble chart for a given dataset.
+
+    Args:
+        data (str or pd.DataFrame, optional): The dataset to use. Defaults to "mpg".
+            Can be "mpg" or a pandas DataFrame.
+        x (str, optional): The column to use for the x-axis. Defaults to "horsepower".
+        y (str, optional): The column to use for the y-axis. Defaults to "weight".
+        size (str, optional): The column to use for the bubble size. Defaults to "acceleration".
+        color (str, optional): The column to use for the bubble color. Defaults to "mpg".
+        x_label (str, optional): The label for the x-axis. Defaults to "Horsepower".
+        y_label (str, optional): The label for the y-axis. Defaults to "Weight".
+        color_label (str, optional): The label for the color bar. Defaults to "Miles per Gallon (mpg)".
+        title (str, optional): The title of the plot. Defaults to
+        "Horsepower vs. Weight with Acceleration as Bubble Size (mpg Dataset)".
+    """
+    # Example 1: MPG Dataset
+    if data == "mpg":
+        df = sns.load_dataset("mpg").dropna()
+        title = "Horsepower vs. Weight with Acceleration as Bubble Size (MPG Dataset)" if title is None else title
+        x_label = "Horsepower" if x_label is None else x_label
+        y_label = "Weight" if y_label is None else y_label
+        color_label = "Miles per Gallon (mpg)" if color_label is None else color_label
+
         plt.figure(figsize=(10, 6))
-        plt.scatter(x=mpg["horsepower"], y=mpg["weight"], s=mpg["acceleration"]*30, alpha=0.5, c=mpg["mpg"], cmap="viridis")
-        plt.colorbar(label='Miles per Gallon (mpg)')
-        plt.title("Horsepower vs. Weight with Acceleration as Bubble Size (mpg Dataset)")
-        plt.xlabel("Horsepower")
-        plt.ylabel("Weight")
+        plt.scatter(x=df[x], y=df[y], s=df[size] * 10, c=df[color], cmap='viridis', alpha=0.6, edgecolors="w", linewidth=1)
 
-        # Show the plot
+        plt.colorbar(plt.scatter(x=df[x], y=df[y], s=df[size] * 10, c=df[color], cmap='viridis', alpha=0.6, edgecolors="w", linewidth=1), label=color_label)
+
+        plt.title(title)
+        plt.xlabel(x_label)
+        plt.ylabel(y_label)
         plt.show()
+        print(f"Bubble chart of {x} vs {y} with {size} as bubble size and {color} as bubble color from the MPG dataset.")
 
-        # Description
-        description = """
-        This bubble chart shows the relationship between horsepower, weight, and acceleration in the 'mpg' dataset.
-        - The X-axis represents horsepower, and the Y-axis represents vehicle weight.
-        - The size of the bubbles represents acceleration, with larger bubbles indicating higher acceleration.
-        - The color gradient indicates the miles per gallon (mpg), where darker shades represent lower fuel efficiency.
-        This chart helps in visualizing how different car characteristics relate to one another.
+    elif isinstance(data, pd.DataFrame):
+        df = data.dropna()
+        title = "Bubble Chart" if title is None else title
+        x_label = x if x_label is None else x_label
+        y_label = y if y_label is None else y_label
+        color_label = color if color_label is None else color_label
+
+        plt.figure(figsize=(10, 6))
+        plt.scatter(x=df[x], y=df[y], s=df[size] * 10, c=df[color], cmap='viridis', alpha=0.6, edgecolors="w", linewidth=1)
+
+        plt.colorbar(plt.scatter(x=df[x], y=df[y], s=df[size] * 10, c=df[color], cmap='viridis', alpha=0.6, edgecolors="w", linewidth=1), label=color_label)
+
+        plt.title(title)
+        plt.xlabel(x_label)
+        plt.ylabel(y_label)
+        plt.show()
+        print(f"Bubble chart of {x} vs {y} with {size} as bubble size and {color} as bubble color from the provided DataFrame.")
+
+    else:
+        raise ValueError("Invalid dataset name. Choose 'mpg' or provide a pandas DataFrame.")
+    
+def scatter_matrix(data="iris", hue="species"):
+    """
+    Generates a scatter matrix plot for a given dataset.
+
+    Args:
+        data (str or pd.DataFrame, optional): The dataset to use. Defaults to "iris".
+            Can be "iris" or a pandas DataFrame.
+        hue (str, optional): The column to use for the color hue. Defaults to "species".
+    """
+    # Example 1: Iris Dataset
+    if data == "iris":
+        df = sns.load_dataset("iris")
+        hue = "species" if hue is None else hue
+        title = "Scatter Matrix Plot - Iris Dataset"
+
+        plt.figure(figsize=(10, 8))
+        sns.pairplot(df, hue=hue, palette="viridis")
+        plt.suptitle(title, y=1.02)
+        plt.show()
+        print(f"Scatter matrix plot for the Iris dataset.")
+
+    elif isinstance(data, pd.DataFrame):
+        df = data
+        title = "Scatter Matrix Plot"
+        plt.figure(figsize=(10, 8))
+        sns.pairplot(df, hue=hue, palette="viridis")
+        plt.suptitle(title, y=1.02)
+        plt.show()
+        print(f"Scatter matrix plot for the provided DataFrame.")
+
+    else:
+        raise ValueError("Invalid dataset name. Choose 'iris' or provide a pandas DataFrame.")
+    
+def density_plot(data="iris", column=None, title=None, x_label=None, y_label=None, color='blue'):
+    """
+    Generates a density plot for a given dataset and column.
+
+    Args:
+        data (str or pd.DataFrame, optional): The dataset to use. Defaults to "iris".
+            Can be "iris", "mpg", or a pandas DataFrame.
+        column (str, optional): The column to plot the density for. Defaults to None.
+        title (str, optional): The title of the plot. Defaults to None.
+        x_label (str, optional): The label for the x-axis. Defaults to None.
+        y_label (str, optional): The label for the y-axis. Defaults to None.
+        color (str, optional): The color of the density plot. Defaults to 'blue'.
+    """
+
+    # Example 1: Iris Dataset
+    if data == "iris":
+        df = sns.load_dataset("iris")
+        column = 'sepal_length' if column is None else column
+        title = "Density Plot - Iris Dataset" if title is None else title
+        x_label = column if x_label is None else x_label
+        y_label = "Density" if y_label is None else y_label
+
+        plt.figure(figsize=(8, 6))
+        sns.kdeplot(df[column], shade=True, color=color)
+        plt.title(title)
+        plt.xlabel(x_label)
+        plt.ylabel(y_label)
+        plt.show()
+        print(f"Density plot of {column} from the Iris dataset.")
+
+    # Example 2: MPG Dataset
+    elif data == "mpg":
+        df = sns.load_dataset("mpg")
+        column = 'mpg' if column is None else column
+        title = "Density Plot - MPG Dataset" if title is None else title
+        x_label = column if x_label is None else x_label
+        y_label = "Density" if y_label is None else y_label
+
+        plt.figure(figsize=(8, 6))
+        sns.kdeplot(df[column], shade=True, color=color)
+        plt.title(title)
+        plt.xlabel(x_label)
+        plt.ylabel(y_label)
+        plt.show()
+        print(f"Density plot of {column} from the MPG dataset.")
+
+    elif isinstance(data, pd.DataFrame):
+        df = data
+        if column is None:
+            raise ValueError("Column parameter must be specified for a custom DataFrame.")
+        title = f"Density Plot of {column}" if title is None else title
+        x_label = column if x_label is None else x_label
+        y_label = "Density" if y_label is None else y_label
+
+        plt.figure(figsize=(8, 6))
+        sns.kdeplot(df[column], shade=True, color=color)
+        plt.title(title)
+        plt.xlabel(x_label)
+        plt.ylabel(y_label)
+        plt.show()
+        print(f"Density plot of {column} from the provided DataFrame.")
+
+    else:
+        raise ValueError("Invalid dataset name. Choose 'iris', 'mpg', or provide a pandas DataFrame.")
+    
+def hexbin_plot(data="iris", x=None, y=None, gridsize=30, cmap="Blues", title=None, x_label=None, y_label=None):
         """
-        print(description)
+        Generates a hexbin plot for a given dataset.
 
-    @staticmethod
-    def radial_chart():
-        """Generates a radial chart (polar chart) showing the average tips by day of the week from the Tips dataset."""
-        # Load dataset
-        tips = sns.load_dataset("tips").groupby("day").agg({"tip": "mean"}).reset_index()
+        Args:
+            data (str or pd.DataFrame, optional): The dataset to use. Defaults to "iris".
+                Can be "iris", "mpg", or a pandas DataFrame.
+            x (str, optional): The column to use for the x-axis. Defaults to None.
+            y (str, optional): The column to use for the y-axis. Defaults to None.
+            gridsize (int, optional): The number of hexagons in the x-direction. Defaults to 30.
+            cmap (str, optional): The color map to use. Defaults to "Blues".
+            title (str, optional): The title of the plot. Defaults to None.
+            x_label (str, optional): The label for the x-axis. Defaults to None.
+            y_label (str, optional): The label for the y-axis. Defaults to None.
+        """
 
-        # Create radial chart
-        plt.figure(figsize=(8, 8))
-        categories = tips["day"]
-        values = tips["tip"]
+        # Example 1: Iris Dataset
+        if data == "iris":
+            df = sns.load_dataset("iris")
+            x = "sepal_length" if x is None else x
+            y = "sepal_width" if y is None else y
+            title = "Hexbin Plot - Iris Dataset" if title is None else title
+            x_label = "Sepal Length" if x_label is None else x_label
+            y_label = "Sepal Width" if y_label is None else y_label
+
+            plt.figure(figsize=(8, 6))
+            plt.hexbin(df[x], df[y], gridsize=gridsize, cmap=cmap)
+            plt.colorbar(label='Count')
+            plt.title(title)
+            plt.xlabel(x_label)
+            plt.ylabel(y_label)
+            plt.show()
+            print(f"Hexbin plot of {x} vs {y} from the Iris dataset.")
+
+        # Example 2: MPG Dataset
+        elif data == "mpg":
+            df = sns.load_dataset("mpg").dropna()
+            x = "horsepower" if x is None else x
+            y = "mpg" if y is None else y
+            title = "Hexbin Plot - MPG Dataset" if title is None else title
+            x_label = "Horsepower" if x_label is None else x_label
+            y_label = "Miles per Gallon (mpg)" if y_label is None else y_label
+
+            plt.figure(figsize=(8, 6))
+            plt.hexbin(df[x], df[y], gridsize=gridsize, cmap=cmap)
+            plt.colorbar(label='Count')
+            plt.title(title)
+            plt.xlabel(x_label)
+            plt.ylabel(y_label)
+            plt.show()
+            print(f"Hexbin plot of {x} vs {y} from the MPG dataset.")
+
+        elif isinstance(data, pd.DataFrame):
+            df = data
+            if x is None or y is None:
+                raise ValueError("x and y parameters must be specified for a custom DataFrame.")
+            title = "Hexbin Plot" if title is None else title
+            x_label = x if x_label is None else x_label
+            y_label = y if y_label is None else y_label
+
+            plt.figure(figsize=(8, 6))
+            plt.hexbin(df[x], df[y], gridsize=gridsize, cmap=cmap)
+            plt.colorbar(label='Count')
+            plt.title(title)
+            plt.xlabel(x_label)
+            plt.ylabel(y_label)
+            plt.show()
+            print(f"Hexbin plot of {x} vs {y} from the provided DataFrame.")
+
+        else:
+
+            raise ValueError("Invalid dataset name. Choose 'iris', 'mpg', or provide a pandas DataFrame.")
         
-        # Convert the data to radians
-        angles = np.linspace(0, 2 * np.pi, len(categories), endpoint=False).tolist()
-        values = np.concatenate((values, [values[0]]))  # Close the plot
+def pairplot(data="iris", hue="species"):
+    """
+    Generates a pairplot for a given dataset.
+
+    Args:
+        data (str or pd.DataFrame, optional): The dataset to use. Defaults to "iris".
+            Can be "iris" or a pandas DataFrame.
+        hue (str, optional): The column to use for the color hue. Defaults to "species".
+    """
+    # Example 1: Iris Dataset
+    if data == "iris":
+        df = sns.load_dataset("iris")
+        hue = "species" if hue is None else hue
+        title = "Pairplot - Iris Dataset"
+
+        plt.figure(figsize=(10, 8))
+        sns.pairplot(df, hue=hue, palette="viridis")
+        plt.suptitle(title, y=1.02)
+        plt.show()
+        print(f"Pairplot for the Iris dataset.")
+
+    elif isinstance(data, pd.DataFrame):
+        df = data
+        title = "Pairplot"
+        plt.figure(figsize=(10, 8))
+        sns.pairplot(df, hue=hue, palette="viridis")
+        plt.suptitle(title, y=1.02)
+        plt.show()
+        print(f"Pairplot for the provided DataFrame.")
+
+    else:
+        raise ValueError("Invalid dataset name. Choose 'iris' or provide a pandas DataFrame.")
+    
+def donut_chart(data="tips", labels=None, values=None, title=None):
+    """
+    Generates a donut chart for a given dataset.
+
+    Args:
+        data (str or pd.DataFrame, optional): The dataset to use. Defaults to "tips".
+            Can be "tips", "titanic", or a pandas DataFrame.
+        labels (list, optional): The labels for the donut chart. Defaults to None.
+        values (list, optional): The values for the donut chart. Defaults to None.
+        title (str, optional): The title of the plot. Defaults to None.
+    """
+
+    # Example 1: Tips Dataset
+    if data == "tips":
+        df = sns.load_dataset("tips").groupby("day", observed=False).agg({"total_bill": "sum"}).reset_index()
+        labels = df["day"] if labels is None else labels
+        values = df["total_bill"] if values is None else values
+        title = "Total Bill Distribution by Day - Tips" if title is None else title
+        colors = sns.color_palette("Set2")
+
+        plt.figure(figsize=(8, 6))
+        plt.pie(values, labels=labels, autopct='%1.1f%%', startangle=90, colors=colors, wedgeprops=dict(width=0.3))
+        plt.title(title)
+        plt.show()
+        print(f"Donut chart for the Tips dataset.")
+
+    # Example 2: Titanic Dataset
+    elif data == "titanic":
+        df = sns.load_dataset("titanic").groupby("class").agg({"survived": "sum"}).reset_index()
+        labels = df["class"] if labels is None else labels
+        values = df["survived"] if values is None else values
+        title = "Survival Rate by Class - Titanic" if title is None else title
+        colors = sns.color_palette("Set3")
+
+        plt.figure(figsize=(8, 6))
+        plt.pie(values, labels=labels, autopct='%1.1f%%', startangle=90, colors=colors, wedgeprops=dict(width=0.3))
+        plt.title(title)
+        plt.show()
+        print(f"Donut chart for the Titanic dataset.")
+
+    elif isinstance(data, pd.DataFrame):
+        df = data
+        if labels is None or values is None:
+            raise ValueError("labels and values parameters must be specified for a custom DataFrame.")
+        title = "Donut Chart" if title is None else title
+        colors = sns.color_palette("viridis")
+
+        plt.figure(figsize=(8, 6))
+        plt.pie(values, labels=labels, autopct='%1.1f%%', startangle=90, colors=colors, wedgeprops=dict(width=0.3))
+        plt.title(title)
+        plt.show()
+        print(f"Donut chart for the provided DataFrame.")
+
+    else:
+        raise ValueError("Invalid dataset name. Choose 'tips', 'titanic', or provide a pandas DataFrame.")
+
+def lollipop_chart(data="tips", x=None, y=None, title=None, x_label=None, y_label=None):
+    """
+    Generates a lollipop chart for a given dataset.
+
+    Args:
+        data (str or pd.DataFrame, optional): The dataset to use. Defaults to "tips".
+            Can be "tips", "titanic", or a pandas DataFrame.
+        x (str, optional): The column to use for the x-axis. Defaults to None.
+        y (str, optional): The column to use for the y-axis. Defaults to None.
+        title (str, optional): The title of the plot. Defaults to None.
+        x_label (str, optional): The label for the x-axis. Defaults to None.
+        y_label (str, optional): The label for the y-axis. Defaults to None.
+    """
+
+    # Example 1: Tips Dataset
+    if data == "tips":
+        df = sns.load_dataset("tips")
+        x = "day" if x is None else x
+        y = "total_bill" if y is None else y
+        title = "Total Bill by Day - Tips" if title is None else title
+        x_label = "Day" if x_label is None else x_label
+        y_label = "Total Bill" if y_label is None else y_label
+
+        plt.figure(figsize=(8, 6))
+        plt.stem(df[x], df[y], basefmt=" ")
+        plt.title(title)
+        plt.xlabel(x_label)
+        plt.ylabel(y_label)
+        plt.show()
+        print(f"Lollipop chart of {x} vs {y} from the Tips dataset.")
+
+    elif isinstance(data, pd.DataFrame):
+        df = data
+        if x is None or y is None:
+            raise ValueError("x and y parameters must be specified for a custom DataFrame.")
+        title = "Lollipop Chart" if title is None else title
+        x_label = x if x_label is None else x_label
+        y_label = y if y_label is None else y_label
+
+        plt.figure(figsize=(8, 6))
+        plt.stem(df[x], df[y], basefmt=" ", use_line_collection=True)
+        plt.title(title)
+        plt.xlabel(x_label)
+        plt.ylabel(y_label)
+        plt.show()
+        print(f"Lollipop chart of {x} vs {y} from the provided DataFrame.")
+
+    else:
+        raise ValueError("Invalid dataset name. Choose 'tips', 'titanic', or provide a pandas DataFrame.")
+
+def radar_chart(data="iris", categories=None, title=None):
+
+    """
+    Generates a radar chart for a given dataset.
+
+    Args:
+        data (str or pd.DataFrame, optional): The dataset to use. Defaults to "iris".
+            Can be "iris" or a pandas DataFrame.
+        categories (list, optional): The categories to plot. Defaults to None.
+        title (str, optional): The title of the plot. Defaults to None.
+    """
+
+    # Example 1: Iris Dataset
+    if data == "iris":
+        df = sns.load_dataset("iris")
+        categories = df.columns[:-1] if categories is None else categories
+        title = "Radar Chart - Iris Dataset" if title is None else title
+
+        # Compute the mean of each category for each species
+        df_mean = df.groupby("species").mean().reset_index()
+
+        # Number of variables
+        num_vars = len(categories)
+
+        # Compute angle of each axis
+        angles = np.linspace(0, 2 * np.pi, num_vars, endpoint=False).tolist()
+
+        # The plot is a circle, so we need to "complete the loop"
         angles += angles[:1]
 
-        # Create plot
-        fig, ax = plt.subplots(figsize=(8, 8), subplot_kw=dict(polar=True))
-        ax.fill(angles, values, color="blue", alpha=0.25)
-        ax.plot(angles, values, color="blue", linewidth=2)
+        fig, ax = plt.subplots(figsize=(8, 6), subplot_kw=dict(polar=True))
 
-        # Add category labels
-        ax.set_yticklabels([])
+        for i, row in df_mean.iterrows():
+            values = row[categories].tolist()
+            values += values[:1]
+            ax.plot(angles, values, label=row["species"])
+            ax.fill(angles, values, alpha=0.25)
+
+        ax.set_title(title)
         ax.set_xticks(angles[:-1])
         ax.set_xticklabels(categories)
-
-        # Title
-        plt.title("Average Tip by Day (Tips Dataset)", size=15)
-
-        # Show the plot
+        ax.legend(loc='upper right', bbox_to_anchor=(1.1, 1.1))
         plt.show()
+        print(f"Radar chart for the Iris dataset.")
 
-        # Description
-        description = """
-        This radial chart (polar chart) shows the average tips by day of the week from the 'Tips' dataset.
-        - Each spoke represents a day of the week, and the distance from the center represents the average tip amount.
-        - The chart makes it easy to visualize which days generate higher tips.
-        Radial charts are great for comparing multiple categories in a circular layout.
-        """
-        print(description)
+    elif isinstance(data, pd.DataFrame):
+        df = data
+        if categories is None:
+            raise ValueError("Categories parameter must be specified for a custom DataFrame.")
+        title = "Radar Chart" if title is None else title
 
+        # Compute the mean of each category
+        df_mean = df.mean().reset_index()
+
+        # Number of variables
+        num_vars = len(categories)
+
+        # Compute angle of each axis
+        angles = np.linspace(0, 2 * np.pi, num_vars, endpoint=False).tolist()
+
+        # The plot is a circle, so we need to "complete the loop"
+        angles += angles[:1]
+
+        fig, ax = plt.subplots(figsize=(8, 6), subplot_kw=dict(polar=True))
+
+        values = df_mean[categories].tolist()
+        values += values[:1]
+        ax.plot(angles, values, label="Mean")
+        ax.fill(angles, values, alpha=0.25)
+
+        ax.set_title(title)
+        ax.set_xticks(angles[:-1])
+        ax.set_xticklabels(categories)
+        ax.legend(loc='upper right', bbox_to_anchor=(1.1, 1.1))
+        plt.show()
+        print(f"Radar chart for the provided DataFrame.")
+
+    else:
+        raise ValueError("Invalid dataset name. Choose 'iris' or provide a pandas DataFrame.")
+    
+def boxen_plot(data="tips", x=None, y=None, title=None, x_label=None, y_label=None, color="skyblue"):
+    """
+    Generates a boxen plot for a given dataset.
+
+    Args:
+        data (str or pd.DataFrame, optional): The dataset to use. Defaults to "tips".
+            Can be "tips", "penguins", or a pandas DataFrame.
+        x (str, optional): The column to use for the x-axis. Defaults to None.
+        y (str, optional): The column to use for the y-axis. Defaults to None.
+        title (str, optional): The title of the plot. Defaults to None.
+        x_label (str, optional): The label for the x-axis. Defaults to None.
+        y_label (str, optional): The label for the y-axis. Defaults to None.
+        color (str, optional): The color of the boxen plot. Defaults to "skyblue".
+    """
+
+    # Example 1: Tips Dataset
+    if data == "tips":
+        df = sns.load_dataset("tips")
+        x = "day" if x is None else x
+        y = "total_bill" if y is None else y
+        title = "Total Bill Distribution by Day - Tips" if title is None else title
+        x_label = "Day" if x_label is None else x_label
+        y_label = "Total Bill" if y_label is None else y_label
+
+        plt.figure(figsize=(8, 6))
+        sns.boxenplot(x=x, y=y, data=df, color=color)
+        plt.title(title)
+        plt.xlabel(x_label)
+        plt.ylabel(y_label)
+        plt.show()
+        print(f"Boxen plot of {x} vs {y} from the Tips dataset.")
+
+    # Example 2: Penguins Dataset
+    elif data == "penguins":
+        df = sns.load_dataset("penguins")
+        x = "species" if x is None else x
+        y = "flipper_length_mm" if y is None else y
+        title = "Flipper Length Distribution by Species - Penguins" if title is None else title
+        color = "lightgreen"
+        x_label = "Species" if x_label is None else x_label
+        y_label = "Flipper Length (mm)" if y_label is None else y_label
+
+        plt.figure(figsize=(8, 6))
+        sns.boxenplot(x=x, y=y, data=df, color=color)
+        plt.title(title)
+        plt.xlabel(x_label)
+        plt.ylabel(y_label)
+        plt.show()
+        print(f"Boxen plot of {x} vs {y} from the Penguins dataset.")
+
+    elif isinstance(data, pd.DataFrame):
+        df = data
+        if x is None or y is None:
+            raise ValueError("x and y parameters must be specified for a custom DataFrame.")
+        title = "Boxen Plot" if title is None else title
+        x_label = x if x_label is None else x_label
+        y_label = y if y_label is None else y_label
+
+        plt.figure(figsize=(8, 6))
+        sns.boxenplot(x=x, y=y, data=df, color=color)
+        plt.title(title)
+        plt.xlabel(x_label)
+        plt.ylabel(y_label)
+        plt.show()
+        print(f"Boxen plot of {x} vs {y} from the provided DataFrame.")
+
+    else:
+        raise ValueError("Invalid dataset name. Choose 'tips', 'penguins', or provide a pandas DataFrame.")
+    
