@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='datai',
-    version='1.0',
+    version='1.1.1',
     description='A library for data visualization and cleaning',
     author='M Ans',
     author_email='m.ans.cs@outlook.com',
