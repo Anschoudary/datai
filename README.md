@@ -317,8 +317,8 @@ time, sine_wave = sound_visualization.generate_sine_wave(frequency=440, duration
 sound_visualization.visualize_waveform(signal=sine_wave, sample_rate=8000, title='Simple Waveform', file_path="wave.png")
 
 # Visualize multiple Waveform
-signal1 = sound_visualization.generate_sine_wave(frequency=440, duration=2, sample_rate=8000)[1]
-signal2 = sound_visualization.generate_cos_wave(frequency=500, duration=3, sample_rate=10000)[1]
+signal1 = sound_visualization.generate_sine_wave(frequency=4, duration=2, sample_rate=8000)[1]
+signal2 = sound_visualization.generate_cos_wave(frequency=5, duration=3, sample_rate=10000)[1]
 
 sound_visualization.visualize_waveform_comparison(signals=[signal1, signal2], sample_rate=8000, file_path="both.png", title="Comp", titles=["sine", "cos"])
 
