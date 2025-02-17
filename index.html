@@ -1,82 +1,142 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Datai - Smart Data Visualization Toolkit</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+        integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
     <style>
-        :root {
-            --primary: #2c3e50;
-            --secondary: #3498db;
-            --light: #ecf0f1;
-            --dark: #2c3e50;
-            --code-bg: #282c34; /* Dark background for code blocks */
-            --code-text: #abb2bf; /* Light text color for code */
-        }
-
-        * {
+        /* CSS Reset (Normalize) */
+        *,
+        *::before,
+        *::after {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
         }
 
+        /* Variables */
+        :root {
+            --primary: #2c3e50;
+            --secondary: #3498db;
+            --light: #ecf0f1;
+            --dark: #2c3e50;
+            --code-bg: #282c34;
+            --code-text: #abb2bf;
+            --font-base: 'Segoe UI', sans-serif;
+            --transition-base: all 0.3s ease-in-out;
+        }
+
+        /* Base Styles */
+        html {
+            scroll-behavior: smooth;
+            /* For smoother internal navigation */
+        }
+
         body {
-            font-family: 'Segoe UI', sans-serif;
+            font-family: var(--font-base);
             line-height: 1.6;
             color: var(--dark);
             background-color: var(--light);
+            overflow-x: hidden;
+            /* Prevent horizontal scroll */
+        }
+
+        img {
+            max-width: 100%;
+            /* Make images responsive */
+            height: auto;
+            display: block;
+            /* Remove extra space below image */
+        }
+
+        /* Typography */
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        h2 {
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+        }
+
+        h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        p {
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+        }
+
+        a {
+            color: var(--secondary);
+            text-decoration: none;
+            transition: var(--transition-base);
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        /* Utility Classes */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
         }
 
         /* Navbar Styles */
         .navbar {
             background: var(--primary);
-            padding: 1rem;
+            color: white;
+            padding: 1rem 2rem;
             position: fixed;
-            width: 100%;
             top: 0;
-            z-index: 1000; /* Ensure navbar stays on top */
+            left: 0;
+            width: 100%;
+            z-index: 1000;
             display: flex;
             justify-content: space-between;
             align-items: center;
-        }
-
-        .navbar a {
-            color: white;
-            text-decoration: none;
-            margin: 0 1rem;
-            transition: color 0.3s ease; /* Smooth color transition */
-        }
-
-        .navbar a:hover {
-            color: var(--secondary);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         }
 
         .navbar-brand {
-            font-size: 1.5rem;
+            font-size: 1.75rem;
             font-weight: bold;
+            color: white;
         }
 
         .navbar-links {
             display: flex;
+            align-items: center;
+        }
+
+        .navbar-links a {
+            margin-left: 2rem;
+            color: white;
+            font-weight: 500;
+        }
+
+        .navbar-links a:hover {
+            color: var(--secondary);
+            text-decoration: none;
         }
 
         /* Hero Section Styles */
         .hero {
-            text-align: center;
-            padding: 4rem 2rem 4rem;
             background: linear-gradient(45deg, var(--primary), var(--secondary));
             color: white;
-            margin-top: 53px; /* Adjust for fixed navbar height */
-        }
-
-        .hero h1 {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-        }
-
-        .hero p {
-            font-size: 1.2rem;
+            text-align: center;
+            padding: 6rem 2rem;
+            margin-top: 60px;
+            /* Adjust for fixed navbar */
         }
 
         .hero code {
@@ -94,55 +154,68 @@
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 2rem;
             padding: 4rem 2rem;
+            background: var(--light);
         }
 
         .feature-card {
             background: white;
             padding: 2rem;
             border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: var(--transition-base);
         }
 
         .feature-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 6px 10px rgba(0,0,0,0.2);
+            box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
         }
 
         .feature-card h3 {
-            font-size: 1.5rem;
+            font-size: 1.4rem;
             margin-bottom: 1rem;
+            color: var(--primary);
         }
 
         .feature-card p {
-            font-size: 1.1rem;
+            font-size: 1rem;
+            color: var(--dark);
+        }
+
+        .feature-card ul {
+            list-style: disc;
+            margin-left: 1.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .feature-card li {
+            font-size: 0.9rem;
+            margin-bottom: 0.3rem;
         }
 
         /* Demo Section Styles */
         .demo-section {
             padding: 4rem 2rem;
-            background: var(--light);
+            background: #f9f9f9;
         }
 
         .demo-section h2 {
             text-align: center;
-            margin-bottom: 2rem;
-            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            font-size: 2.2rem;
         }
 
         .demo-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 2rem;
-            margin-top: 2rem;
         }
 
         .demo-card {
             background: white;
             border-radius: 8px;
             overflow: hidden;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            transition: transform 0.3s ease;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            transition: var(--transition-base);
         }
 
         .demo-card:hover {
@@ -153,11 +226,11 @@
             width: 100%;
             height: 200px;
             object-fit: cover;
-            transition: transform 0.5s ease;
+            transition: transform 0.3s ease;
         }
 
         .demo-card:hover img {
-            transform: scale(1.1);
+            transform: scale(1.05);
         }
 
         .demo-content {
@@ -165,8 +238,13 @@
         }
 
         .demo-content h4 {
-            font-size: 1.3rem;
+            font-size: 1.2rem;
             margin-bottom: 0.8rem;
+            color: var(--primary);
+        }
+
+        .demo-content p {
+            font-size: 1rem;
         }
 
         /* Code Styles */
@@ -207,12 +285,12 @@
             border-radius: 4px;
             cursor: pointer;
             font-size: 0.8rem;
-            opacity: 0; /* Initially hidden */
-            transition: opacity 0.3s ease;
+            opacity: 0;
+            transition: var(--transition-base);
         }
 
         pre:hover .copy-code-button {
-            opacity: 1; /* Show on hover */
+            opacity: 1;
         }
 
         /* Documentation Section Styles */
@@ -222,17 +300,18 @@
 
         .documentation h2 {
             text-align: center;
-            margin-bottom: 2rem;
-            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            font-size: 2.2rem;
         }
 
         .documentation h3 {
-            font-size: 1.7rem;
+            font-size: 1.4rem;
             margin-top: 2rem;
             margin-bottom: 1rem;
+            color: var(--primary);
         }
 
-        .documentation > div {
+        .documentation>div {
             max-width: 800px;
             margin: 0 auto;
         }
@@ -258,60 +337,128 @@
 
         footer a:hover {
             color: var(--secondary);
+            text-decoration: underline;
         }
 
-        /* Responsive Design */
+        /* Mobile Navigation (Hamburger Menu) - ADD THIS SECTION */
+        .menu-toggle {
+            display: none;
+            /* Hide by default */
+            flex-direction: column;
+            justify-content: space-around;
+            height: 25px;
+            width: 30px;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            padding: 0;
+        }
+
+        .menu-toggle span {
+            height: 3px;
+            width: 100%;
+            background: white;
+            border-radius: 3px;
+            transition: transform 0.3s ease, opacity 0.3s ease;
+        }
+
+        /* Styles when menu is open */
+        .navbar-links.active {
+            display: flex;
+            flex-direction: column;
+            position: absolute;
+            top: 60px;
+            left: 0;
+            width: 100%;
+            background: var(--primary);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        .navbar-links.active a {
+            padding: 1rem;
+            margin: 0;
+            display: block;
+            text-align: center;
+        }
+
+        .menu-toggle.active span:nth-child(1) {
+            transform: translateY(11px) rotate(45deg);
+        }
+
+        .menu-toggle.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .menu-toggle.active span:nth-child(3) {
+            transform: translateY(-11px) rotate(-45deg);
+        }
+
+        /* Media Queries */
         @media (max-width: 768px) {
+
+            /* Navbar */
             .navbar {
-                flex-direction: column;
-                align-items: flex-start;
-                padding: 0.5rem;
+                padding: 1rem;
+                /* Reduced padding */
             }
 
-            .navbar-brand {
-                margin-bottom: 0.5rem;
-            }
-
+            /* Hide the links, show the menu toggle */
             .navbar-links {
-                flex-direction: column;
+                display: none;
             }
 
-            .navbar a {
-                margin: 0.5rem 0;
+            /* Show the menu-toggle button */
+            .menu-toggle {
+                display: flex;
             }
 
+            /* Hero */
             .hero {
-                padding: 6rem 2rem 3rem;
+                padding: 4rem 2rem;
+                /* Reduced padding */
+                margin-top: 50px;
+                /* Adjust navbar height */
             }
 
             .hero h1 {
-                font-size: 2.5rem;
+                font-size: 2rem;
+                /* Smaller heading on mobile */
             }
 
+            .hero p {
+                font-size: 1rem;
+            }
+
+            /* Features */
             .features {
                 padding: 3rem 1rem;
+                /* Reduced padding */
+                grid-template-columns: 1fr;
+                /* Stack features on mobile */
             }
 
-            .feature-card {
-                padding: 1.5rem;
-            }
-
+            /* Demo Section */
             .demo-section {
                 padding: 3rem 1rem;
+                /* Reduced padding */
             }
 
             .demo-grid {
                 grid-template-columns: 1fr;
+                /* Stack demos on mobile */
             }
 
+            /* Documentation */
             .documentation {
                 padding: 3rem 1rem;
+                /* Reduced padding */
             }
         }
-
     </style>
 </head>
+
 <body>
+    <!-- Navbar -->
     <nav class="navbar">
         <a href="#home" class="navbar-brand">Datai</a>
         <div class="navbar-links">
@@ -322,16 +469,21 @@
                 <i class="fab fa-github"></i> GitHub
             </a>
         </div>
+        <button class="menu-toggle">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
     </nav>
 
+    <!-- Hero Section -->
     <section class="hero" id="home">
         <h1>Datai</h1>
         <p>Smart Data Visualization & Analysis Toolkit</p>
         <div style="margin: 2rem 0; display: flex; justify-content: center; align-items: center;">
-            <code 
-                class="language-bash">pip install datai
-                <button onclick="copyToClipboard('pip install datai', this)" 
-                style="margin-left: 1rem; padding: 0.5rem 1rem; background: var(--secondary); color: white; border: none; border-radius: 4px; cursor: pointer;">
+            <code class="language-bash">pip install datai
+                <button onclick="copyToClipboard('pip install datai', this)"
+                    style="margin-left: 1rem; padding: 0.5rem 1rem; background: var(--secondary); color: white; border: none; border-radius: 4px; cursor: pointer;">
                     Copy
                 </button>
             </code>
@@ -349,10 +501,12 @@
         <p>Unlock insights from your data with ease.</p>
     </section>
 
+    <!-- Features Section -->
     <section class="features" id="features">
         <div class="feature-card">
             <h3>📊 Auto Visualization</h3>
-            <p>Automatic plot suggestions based on data characteristics, saving you time and effort in exploratory data analysis.</p>
+            <p>Automatic plot suggestions based on data characteristics, saving you time and effort in exploratory data
+                analysis.</p>
             <ul>
                 <li>Intelligent plot selection</li>
                 <li>Customizable recommendations</li>
@@ -361,7 +515,8 @@
         </div>
         <div class="feature-card">
             <h3>🧹 Data Cleaning</h3>
-            <p>Built-in tools for handling missing values, normalization, outlier detection, and other common data cleaning tasks.</p>
+            <p>Built-in tools for handling missing values, normalization, outlier detection, and other common data
+                cleaning tasks.</p>
             <ul>
                 <li>Missing value imputation</li>
                 <li>Normalization methods (MinMax, Z-score)</li>
@@ -409,6 +564,7 @@
         </div>
     </section>
 
+    <!-- Demo Section -->
     <section class="demo-section" id="demos">
         <h2 style="text-align: center; margin-bottom: 2rem;">Live Demos</h2>
 
@@ -452,7 +608,7 @@ sound_visualization.visualize_waveform(signal=sine_wave, sample_rate=8000, title
             <div class="demo-card">
                 <img src="../datai-main/images/spiral.gif" alt="Shape Swarm Animation">
                 <div class="demo-content">
-                    <h4>Animated spiral /h4>
+                    <h4>Animated spiral</h4>
                     <p>Create animated swarms of shapes and other engaging animations.</p>
                     <pre><code class="language-python">from datai.gift import animate_spiral
 animate_spiral(file_path='spiral.gif')</code></pre>
@@ -461,6 +617,7 @@ animate_spiral(file_path='spiral.gif')</code></pre>
         </div>
     </section>
 
+    <!-- Documentation Section -->
     <section class="documentation" id="docs" style="padding: 4rem 2rem;">
         <h2 style="text-align: center; margin-bottom: 2rem;">Getting Started</h2>
 
@@ -487,7 +644,7 @@ df = pd.DataFrame(data)
 df_clean = handle_missing_values(df, method='mean')
 print(df_clean)</code></pre>
 
-           <h3 style="margin-top: 2rem;">Validating Data Sets</h3>
+            <h3 style="margin-top: 2rem;">Validating Data Sets</h3>
             <p>Before working on dataset, one should validate it using the method <code>validate_dataset</code></p>
             <pre><code class="language-python">from datai.utils import validate_dataset
 import pandas as pd
@@ -500,15 +657,18 @@ print(f"Dataset is valid: {is_valid}")</code></pre>
         </div>
     </section>
 
+    <!-- Footer -->
     <footer style="background: var(--primary); color: white; text-align: center; padding: 2rem;">
         <p>© 2023 Datai Project</p>
         <p style="margin-top: 1rem;">
             <a href="mailto:m.ans.cs@outlook.com" style="color: white;">Contact Maintainers</a> |
-            <a href="https://github.com/your-username/datai" style="color: white;" target="_blank" rel="noopener noreferrer">GitHub Repository</a>
+            <a href="https://github.com/your-username/datai" style="color: white;" target="_blank"
+                rel="noopener noreferrer">GitHub Repository</a>
         </p>
     </footer>
 
     <script>
+        // Copy Code Function
         document.addEventListener('DOMContentLoaded', () => {
             // Add copy button to each pre element
             document.querySelectorAll('pre').forEach(pre => {
@@ -534,10 +694,27 @@ print(f"Dataset is valid: {is_valid}")</code></pre>
                 pre.appendChild(button);
             });
         });
+
+        // Mobile Menu Toggle
+        document.querySelector('.menu-toggle').addEventListener('click', function () {
+            document.querySelector('.navbar-links').classList.toggle('active');
+            this.classList.toggle('active');
+        });
     </script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/dark.min.css" integrity="sha512-K8PPqszB9WQO+y4/56xXoWp2zXJg2aQ2rTTzYPYM2jO+c6s5/wL6x4o8oB29c0j3l1O2IeC+x+h7z2sTqxg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js" integrity="sha512-btOCF4Q7u5lG9t07o93zTgn+d6b/pS2h1t3Ea0gH0u68hLd3v1Y1xW+4I3+7Gv7v0U8g4k8y/y4VzS2P5Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <!-- Code Highlighting Scripts -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/dark.min.css"
+        integrity="sha512-K8PPqszB9WQO+y4/56xXoWp2zXJg2aQ2rTTzYPYM2jO+c6s5/wL6x4o8oB29c0j3l1O2IeC+x+h7z2sTqxg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"
+        integrity="sha512-btOCF4Q7u5lG9t07o93zTgn+d6b/pS2h1t3Ea0gH0u68hLd3v1Y1xW+4I3+7Gv7v0U8g4k8y/y4VzS2P5Q=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script>hljs.highlightAll();</script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/js/all.min.js" integrity="sha512-iV8h7l0X6l7u+2cR8Zl/J6uS3yv5J9d/7q6t5w2k3Mv0F1z5a+mF8q3zJvW7iI8/t5c9N/p/5mK9FjL8w==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <!-- Font Awesome Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/js/all.min.js"
+        integrity="sha512-iV8h7l0X6l7u+2cR8Zl/J6uS3yv5J9d/7q6t5w2k3Mv0F1z5a+mF8q3zJvW7iI8/t5c9N/p/5mK9FjL8w=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 </body>
+
 </html>
