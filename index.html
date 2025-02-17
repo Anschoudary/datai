@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Datai - Smart Data Visualization Toolkit</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --secondary: #3498db;
+            --light: #ecf0f1;
+            --dark: #2c3e50;
+            --code-bg: #282c34; /* Dark background for code blocks */
+            --code-text: #abb2bf; /* Light text color for code */
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background-color: var(--light);
+        }
+
+        /* Navbar Styles */
+        .navbar {
+            background: var(--primary);
+            padding: 1rem;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000; /* Ensure navbar stays on top */
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            margin: 0 1rem;
+            transition: color 0.3s ease; /* Smooth color transition */
+        }
+
+        .navbar a:hover {
+            color: var(--secondary);
+        }
+
+        .navbar-brand {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .navbar-links {
+            display: flex;
+        }
+
+        /* Hero Section Styles */
+        .hero {
+            text-align: center;
+            padding: 4rem 2rem 4rem;
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            color: white;
+            margin-top: 53px; /* Adjust for fixed navbar height */
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+        }
+
+        .hero code {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 0.4rem 0.6rem;
+            border-radius: 6px;
+            font-size: 1rem;
+            font-family: monospace;
+        }
+
+        /* Features Section Styles */
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            padding: 4rem 2rem;
+        }
+
+        .feature-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 10px rgba(0,0,0,0.2);
+        }
+
+        .feature-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .feature-card p {
+            font-size: 1.1rem;
+        }
+
+        /* Demo Section Styles */
+        .demo-section {
+            padding: 4rem 2rem;
+            background: var(--light);
+        }
+
+        .demo-section h2 {
+            text-align: center;
+            margin-bottom: 2rem;
+            font-size: 2.5rem;
+        }
+
+        .demo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .demo-card {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .demo-card:hover {
+            transform: translateY(-3px);
+        }
+
+        .demo-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .demo-card:hover img {
+            transform: scale(1.1);
+        }
+
+        .demo-content {
+            padding: 1.5rem;
+        }
+
+        .demo-content h4 {
+            font-size: 1.3rem;
+            margin-bottom: 0.8rem;
+        }
+
+        /* Code Styles */
+        code {
+            background: var(--code-bg);
+            color: var(--code-text);
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 0.9rem;
+        }
+
+        pre {
+            background: var(--code-bg);
+            color: var(--code-text);
+            padding: 1rem;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 1rem 0;
+            font-family: monospace;
+            position: relative;
+        }
+
+        pre code {
+            background: transparent;
+            padding: 0;
+        }
+
+        /* Copy Code Button */
+        .copy-code-button {
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            background: var(--secondary);
+            color: white;
+            border: none;
+            padding: 0.3rem 0.6rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            opacity: 0; /* Initially hidden */
+            transition: opacity 0.3s ease;
+        }
+
+        pre:hover .copy-code-button {
+            opacity: 1; /* Show on hover */
+        }
+
+        /* Documentation Section Styles */
+        .documentation {
+            padding: 4rem 2rem;
+        }
+
+        .documentation h2 {
+            text-align: center;
+            margin-bottom: 2rem;
+            font-size: 2.5rem;
+        }
+
+        .documentation h3 {
+            font-size: 1.7rem;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .documentation > div {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        /* Footer Styles */
+        footer {
+            background: var(--primary);
+            color: white;
+            text-align: center;
+            padding: 2rem;
+        }
+
+        footer p {
+            margin: 0.5rem 0;
+            font-size: 1rem;
+        }
+
+        footer a {
+            color: white;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        footer a:hover {
+            color: var(--secondary);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 0.5rem;
+            }
+
+            .navbar-brand {
+                margin-bottom: 0.5rem;
+            }
+
+            .navbar-links {
+                flex-direction: column;
+            }
+
+            .navbar a {
+                margin: 0.5rem 0;
+            }
+
+            .hero {
+                padding: 6rem 2rem 3rem;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .features {
+                padding: 3rem 1rem;
+            }
+
+            .feature-card {
+                padding: 1.5rem;
+            }
+
+            .demo-section {
+                padding: 3rem 1rem;
+            }
+
+            .demo-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .documentation {
+                padding: 3rem 1rem;
+            }
+        }
+
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <a href="#home" class="navbar-brand">Datai</a>
+        <div class="navbar-links">
+            <a href="#features">Features</a>
+            <a href="#demos">Demos</a>
+            <a href="#docs">Documentation</a>
+            <a href="https://github.com/your-username/datai" target="_blank" rel="noopener noreferrer">
+                <i class="fab fa-github"></i> GitHub
+            </a>
+        </div>
+    </nav>
+
+    <section class="hero" id="home">
+        <h1>Datai</h1>
+        <p>Smart Data Visualization & Analysis Toolkit</p>
+        <div style="margin: 2rem 0; display: flex; justify-content: center; align-items: center;">
+            <code 
+                class="language-bash">pip install datai
+                <button onclick="copyToClipboard('pip install datai', this)" 
+                style="margin-left: 1rem; padding: 0.5rem 1rem; background: var(--secondary); color: white; border: none; border-radius: 4px; cursor: pointer;">
+                    Copy
+                </button>
+            </code>
+
+            <script>
+                function copyToClipboard(text, button) {
+                    navigator.clipboard.writeText(text);
+                    button.textContent = 'Copied!';
+                    setTimeout(() => {
+                        button.textContent = 'Copy';
+                    }, 1500);
+                }
+            </script>
+        </div>
+        <p>Unlock insights from your data with ease.</p>
+    </section>
+
+    <section class="features" id="features">
+        <div class="feature-card">
+            <h3>📊 Auto Visualization</h3>
+            <p>Automatic plot suggestions based on data characteristics, saving you time and effort in exploratory data analysis.</p>
+            <ul>
+                <li>Intelligent plot selection</li>
+                <li>Customizable recommendations</li>
+                <li>Supports multiple data types</li>
+            </ul>
+        </div>
+        <div class="feature-card">
+            <h3>🧹 Data Cleaning</h3>
+            <p>Built-in tools for handling missing values, normalization, outlier detection, and other common data cleaning tasks.</p>
+            <ul>
+                <li>Missing value imputation</li>
+                <li>Normalization methods (MinMax, Z-score)</li>
+                <li>Outlier capping techniques</li>
+            </ul>
+        </div>
+        <div class="feature-card">
+            <h3>🎨 Custom Animations</h3>
+            <p>Create engaging visualizations and animated content, including shape swarms and Conway's Game of Life.</p>
+            <ul>
+                <li>Animate text and shapes</li>
+                <li>Generate interactive simulations</li>
+                <li>Export animations as GIFs</li>
+            </ul>
+
+        </div>
+        <div class="feature-card">
+            <h3><i class="fas fa-volume-up"></i> Sound Visualization</h3>
+            <p>Visualize audio data with waveform plots, spectrograms, and frequency analysis.</p>
+            <ul>
+                <li>Waveform visualization</li>
+                <li>Spectrogram generation</li>
+                <li>FFT analysis</li>
+            </ul>
+        </div>
+
+        <div class="feature-card">
+            <h3><i class="fas fa-chart-line"></i> Exploratory Data Analysis</h3>
+            <p>Provides detailed information on the data set using data info</p>
+            <ul>
+                <li>Easy Data Exploration</li>
+                <li>Dataset Validation</li>
+                <li>Summary of the data</li>
+            </ul>
+        </div>
+
+        <div class="feature-card">
+            <h3><i class="fas fa-file-code"></i> Safe and Compatible</h3>
+            <p>Convert your data to a safe and compatible data type and name your columns as you wish</p>
+            <ul>
+                <li>Convert Column Types</li>
+                <li>Validate Datasets</li>
+                <li>Name Compatibility</li>
+            </ul>
+        </div>
+    </section>
+
+    <section class="demo-section" id="demos">
+        <h2 style="text-align: center; margin-bottom: 2rem;">Live Demos</h2>
+
+        <div class="demo-grid">
+            <!-- Auto Plotting Demo -->
+            <div class="demo-card">
+                <img src="../datai-main/images/bar_chart.png" alt="Auto Plotting Demo">
+                <div class="demo-content">
+                    <h4>Auto Plotting</h4>
+                    <p>Automatically suggest the best plots for your data.</p>
+                    <pre><code class="language-python">from datai.auto_plot import auto_plot
+import pandas as pd
+
+data = {'Category': ['A', 'B', 'A', 'C', 'B', 'A'],
+        'Value': [10, 15, 7, 12, 9, 11],
+        'Group': ['X', 'Y', 'X', 'Y', 'X', 'Y']}
+df = pd.DataFrame(data)
+auto_plot(df)</code></pre>
+                </div>
+            </div>
+
+            <!-- Sound Visualization Demo -->
+            <div class="demo-card">
+                <img src="../datai-main/images/wave.png" alt="Sound Visualization">
+                <div class="demo-content">
+                    <h4>Sound Analysis</h4>
+                    <p>Visualize waveform, FFT and spectrogram with ease</p>
+                    <pre><code class="language-python">import numpy as np
+import matplotlib.pyplot as plt
+from datai import sound_visualization
+
+# Generate a simple signal (e.g., a sine wave)
+time, sine_wave = sound_visualization.generate_sine_wave(frequency=1, duration=2, sample_rate=8000)
+
+# Visualize the waveform
+sound_visualization.visualize_waveform(signal=sine_wave, sample_rate=8000, title='Simple Waveform', file_path="wave.png")</code></pre>
+                </div>
+            </div>
+
+            <!-- Animated Swarm Demo -->
+            <div class="demo-card">
+                <img src="../datai-main/images/spiral.gif" alt="Shape Swarm Animation">
+                <div class="demo-content">
+                    <h4>Animated spiral /h4>
+                    <p>Create animated swarms of shapes and other engaging animations.</p>
+                    <pre><code class="language-python">from datai.gift import animate_spiral
+animate_spiral(file_path='spiral.gif')</code></pre>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="documentation" id="docs" style="padding: 4rem 2rem;">
+        <h2 style="text-align: center; margin-bottom: 2rem;">Getting Started</h2>
+
+        <div style="max-width: 800px; margin: 0 auto;">
+            <h3>Installation</h3>
+            <p>Install Datai using pip:</p>
+            <pre><code class="language-bash">pip install datai</code></pre>
+
+            <h3 style="margin-top: 2rem;">Basic Usage</h3>
+            <p>Create a scatter plot using the built-in <code>scatter_plot</code> function:</p>
+            <pre><code class="language-python">from datai.visualization import scatter_plot
+scatter_plot(data="iris", x="sepal_length", y="sepal_width", title="Iris Sepal Length vs. Width")</code></pre>
+
+            <h3 style="margin-top: 2rem;">Data Cleaning</h3>
+            <p>Handle missing values in your DataFrame using the <code>handle_missing_values</code> function:</p>
+            <pre><code class="language-python">from datai.data_cleaning import handle_missing_values
+import pandas as pd
+import numpy as np
+
+# Sample DataFrame with missing values
+data = {'col1': [1, 2, np.nan, 4], 'col2': [5, np.nan, 7, 8]}
+df = pd.DataFrame(data)
+
+df_clean = handle_missing_values(df, method='mean')
+print(df_clean)</code></pre>
+
+           <h3 style="margin-top: 2rem;">Validating Data Sets</h3>
+            <p>Before working on dataset, one should validate it using the method <code>validate_dataset</code></p>
+            <pre><code class="language-python">from datai.utils import validate_dataset
+import pandas as pd
+
+data = {'Name': ['Alice', 'Bob', 'Charlie'], 'Age': [25, 30, 35]}
+df = pd.DataFrame(data)
+
+is_valid = validate_dataset(df)
+print(f"Dataset is valid: {is_valid}")</code></pre>
+        </div>
+    </section>
+
+    <footer style="background: var(--primary); color: white; text-align: center; padding: 2rem;">
+        <p>© 2023 Datai Project</p>
+        <p style="margin-top: 1rem;">
+            <a href="mailto:m.ans.cs@outlook.com" style="color: white;">Contact Maintainers</a> |
+            <a href="https://github.com/your-username/datai" style="color: white;" target="_blank" rel="noopener noreferrer">GitHub Repository</a>
+        </p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Add copy button to each pre element
+            document.querySelectorAll('pre').forEach(pre => {
+                const button = document.createElement('button');
+                button.classList.add('copy-code-button');
+                button.innerHTML = '<i class="fas fa-copy"></i> Copy'; // Font Awesome copy icon
+
+                button.addEventListener('click', () => {
+                    const code = pre.querySelector('code').innerText;
+                    navigator.clipboard.writeText(code)
+                        .then(() => {
+                            button.textContent = 'Copied!';
+                            setTimeout(() => {
+                                button.innerHTML = '<i class="fas fa-copy"></i> Copy';
+                            }, 2000);
+                        })
+                        .catch(err => {
+                            console.error('Failed to copy code: ', err);
+                            button.textContent = 'Error';
+                        });
+                });
+
+                pre.appendChild(button);
+            });
+        });
+    </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/dark.min.css" integrity="sha512-K8PPqszB9WQO+y4/56xXoWp2zXJg2aQ2rTTzYPYM2jO+c6s5/wL6x4o8oB29c0j3l1O2IeC+x+h7z2sTqxg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js" integrity="sha512-btOCF4Q7u5lG9t07o93zTgn+d6b/pS2h1t3Ea0gH0u68hLd3v1Y1xW+4I3+7Gv7v0U8g4k8y/y4VzS2P5Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script>hljs.highlightAll();</script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/js/all.min.js" integrity="sha512-iV8h7l0X6l7u+2cR8Zl/J6uS3yv5J9d/7q6t5w2k3Mv0F1z5a+mF8q3zJvW7iI8/t5c9N/p/5mK9FjL8w==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+</body>
+</html>
